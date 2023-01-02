@@ -1,23 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import AppHeader from './components/AppHeader';
+import BurgerIngredients from './components/BurgerIngredients';
+import BurgerConstructor from './components/BurgerConstructor';
+import data from './Data';
+import styles from './App.module.css';
 
-function App() {
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React ++
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <AppHeader />
+      <div className={styles.main}>
+        <BurgerIngredients data={data} />
+        <BurgerConstructor data={data} />
+      </div>
+    </React.Fragment>
   );
 }
 

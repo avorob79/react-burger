@@ -1,0 +1,27 @@
+.flexContainer {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: center;
+    row-gap: 16px;
+}
+
+.burgerConstructor {
+    composes: flexContainer;
+    width: 600px;
+    height: 100%;
+}
+
+.ingredients {
+    composes: flexContainer;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    height: calc(100% - 436px);
+}
+
+.currency svg {
+    vertical-align: middle;
+    width: 33px;
+    height: 33px;
+}

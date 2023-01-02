@@ -1,0 +1,35 @@
+.header {
+    margin: 0 auto;
+    width: 1280px;
+}
+
+.button {
+    display: flex;
+    padding: 16px 20px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.leftButton {
+    composes: button;
+    float: left;
+}
+
+.rightButton {
+    composes: button;
+    float: right;
+}
+
+.buttonText {
+    display:inline-block;
+}
+
+.logo {
+    position: absolute;
+    left: calc(50% - 145px);
+    top: 24px;
+}
+
+.logo svg {
+    height: 40px;
+}
