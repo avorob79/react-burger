@@ -4,6 +4,10 @@
     width: 272px;
 }
 
+.image {
+    width: calc(100% - 32px);
+}
+
 .price {
     display: inline-block;
     vertical-align: middle;

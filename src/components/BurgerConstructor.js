@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {DragIcon, CurrencyIcon, ConstructorElement, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerConstructor.module.css';
+import {ingredientType} from '../utils/types';
 
 function BurgerConstructor(props) {
   const bun = props.data.find(item => item.type === "bun");
@@ -30,15 +31,7 @@ function BurgerConstructor(props) {
 }
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      image_mobile: PropTypes.string.isRequired
-    })
-  ).isRequired
+  data: PropTypes.arrayOf(ingredientType).isRequired
 };
 
 export default BurgerConstructor;
