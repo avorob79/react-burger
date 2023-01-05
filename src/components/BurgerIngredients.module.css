@@ -1,0 +1,21 @@
+.burgerIngredients {
+    width: 600px;
+    height: 100%;
+}
+
+.tabs {
+    display: flex;
+}
+
+.ingredients {
+    display: flex;
+    flex-flow: row wrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    height: calc(100% - 156px);
+}
+
+.type {
+    width: 100%;
+}
