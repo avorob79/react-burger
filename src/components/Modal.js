@@ -24,7 +24,7 @@ function Modal(props) {
       <ModalOverlay onClose={onClose} />
       <div className={`${styles.content} pl-10 pr-10 pt-10 pb-15`}>
         <div className={`${styles.header} pt-3 pb-3`}>
-          <p className="text text_type_main-large">{title}</p>
+          <h1 className="text text_type_main-large">{title}</h1>
           <div onClick={onClose} className={styles.closeButton}>
             <CloseIcon type="primary" />
           </div>
