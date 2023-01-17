@@ -1,13 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {DragIcon, CurrencyIcon, ConstructorElement, Button} from '@ya.praktikum/react-developer-burger-ui-components';
+import OrderDetails from './OrderDetails';
+import Modal from './Modal';
 import styles from './BurgerConstructor.module.css';
 import {ingredientType} from '../utils/types';
 
 function BurgerConstructor(props) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toggleIsOpen = (e) => {
+    setIsOpen(prevState => {
+      return !prevState;
+    });
+    if (!!e && !!e.stopPropagation) {
+      e.stopPropagation();
+    }
+  };
   const bun = props.data.find(item => item.type === "bun");
   return (
-    <div className={styles.burgerConstructor}>
+    <section className={styles.burgerConstructor}>
       <ConstructorElement type="top" isLocked={true} text="Краторная булка N-200i (верх)" price={bun.price} thumbnail={bun.image_mobile} extraClass="mr-4 mt-25" />
       <div className={styles.ingredients}>
         {props.data.filter(item => item.type !== "bun").map((item, index) => (
@@ -24,9 +35,14 @@ function BurgerConstructor(props) {
         <div className={styles.currency}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" extraClass="ml-10 mr-4">Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="large" onClick={toggleIsOpen} extraClass="ml-10 mr-4">Оформить заказ</Button>
       </div>
-    </div>
+      {!!isOpen &&
+        <Modal title="" onClose={toggleIsOpen}>
+          <OrderDetails />
+        </Modal>
+      }
+    </section>
   );
 }
 

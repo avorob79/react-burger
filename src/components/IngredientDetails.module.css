@@ -1,0 +1,28 @@
+.ingredientDetails {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 520px;
+}
+
+.image {
+  width: 480px;
+  height: 240px;
+}
+
+.details {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.detail {
+  text-align: center;
+  flex-grow: 1;
+  max-width: 120px;
+}

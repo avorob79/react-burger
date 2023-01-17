@@ -1,0 +1,31 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.content {
+  background-color: #1c1c21;
+  border-radius: 40px;
+  width: 640px;
+  z-index: 3;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-height: 40px;
+}
+
+.closeButton {
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+}
