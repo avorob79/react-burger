@@ -1,11 +1,8 @@
-import { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './OrderDetails.module.css';
-import { OrderNumberContext } from '../../services/OrderNumberContext';
 
-function OrderDetails() {
-  const number = useContext(OrderNumberContext);
-
+function OrderDetails({number}) {
   return (
     <div className={styles.orderDetails}>
         <p className="text text_type_digits-large mt-4">{number}</p>
@@ -22,6 +19,10 @@ function OrderDetails() {
         <p className="text text_type_main-default text_color_inactive mt-2 mb-15">Дождитесь готовности на орбитальной станции</p>
     </div>
   );
+};
+
+OrderDetails.propTypes = {
+  number: PropTypes.number.isRequired
 };
 
 export default OrderDetails;

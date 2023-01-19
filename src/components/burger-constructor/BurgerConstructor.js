@@ -1,28 +1,15 @@
-import React, { useContext, useReducer, useMemo, useEffect } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {DragIcon, CurrencyIcon, ConstructorElement, Button} from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/Modal';
 import styles from './BurgerConstructor.module.css';
 import { ErrorContext } from '../../services/ErrorContext';
 import { ConstructorIngredientsContext } from '../../services/ConstructorIngredientsContext';
-import { OrderNumberContext } from '../../services/OrderNumberContext';
 import { burgerFetch } from '../../utils/burgerFetch';
-
-function reducer(state, action) {
-  switch (action.type) {
-    case "set":
-      return (action.ingredients.find((item) => item.type === "bun")?.price ?? 0) * 2 + action.ingredients.filter((item) => item.type !== "bun").reduce((acc, item) => acc + item.price, 0);
-    case "reset":
-      return 0;
-    default:
-      throw new Error(`Недопустимый тип действия: ${action.type}`);
-  }
-}
 
 function BurgerConstructor() {
   const { setError } = useContext(ErrorContext);
   const ingredients = useContext(ConstructorIngredientsContext);
-  const [totalPrice, dispatcher] = useReducer(reducer, 0);
   const [orderNumber, setOrderNumber] = React.useState(null);
   const [orderLoading, setOrderLoading] = React.useState(false);
   const [isOpenDetails, setIsOpenDetails] = React.useState(false);
@@ -36,17 +23,15 @@ function BurgerConstructor() {
     [ingredients]
   );
 
-  useEffect(
-    () => {
-      dispatcher({type: 'set', ingredients: ingredients});
-    },
-    [dispatcher, ingredients]
+  const totalPrice = useMemo(
+    ()=> (ingredients.find((item) => item.type === "bun")?.price ?? 0) * 2 + ingredients.filter((item) => item.type !== "bun").reduce((acc, item) => acc + item.price, 0),
+    [ingredients]
   );
 
   const showOrderDetails = (e) => {
     if (!orderNumber) {
       setOrderLoading(true);
-      burgerFetch("orders", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients: ingredients.map((item) => item._id) }) })
+      burgerFetch("orders", { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ingredients: [bun._id, ...other.map((item) => item._id), bun._id] }) })
         .then(result => {
           setOrderNumber(result.order.number);
           setIsOpenDetails(true);
@@ -56,16 +41,10 @@ function BurgerConstructor() {
     } else {
       setIsOpenDetails(true);
     }
-    if (!!e && !!e.stopPropagation) {
-      e.stopPropagation();
-    }
   }
 
   const hideOrderDetails = (e) => {
     setIsOpenDetails(false);
-    if (!!e && !!e.stopPropagation) {
-      e.stopPropagation();
-    }
   };
 
   return (
@@ -101,9 +80,7 @@ function BurgerConstructor() {
       </div>
       {!!isOpenDetails &&
         <Modal title="" onClose={hideOrderDetails}>
-          <OrderNumberContext.Provider value={orderNumber}>
-            <OrderDetails />
-          </OrderNumberContext.Provider>
+          <OrderDetails number={orderNumber} />
         </Modal>
       }
     </section>

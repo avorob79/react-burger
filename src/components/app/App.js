@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
@@ -20,14 +20,18 @@ function App() {
       .catch(e => setError(e.message));
   }, []);
 
+  const constructorIngredients = useMemo(
+    () => !!data && data.length > 0 ? [data[1], data[3], ...data.slice(6, 9)] : [],
+    [data]);
+
   return (
     <React.Fragment>
       <ErrorContext.Provider value={{ error, setError }}>
         <AppHeader />
         {!!data &&
           <main className={styles.main}>
-            <ConstructorIngredientsContext.Provider value={[data[1], data[3], ...data.slice(6, 9)]}>
-              <BurgerIngredients data={data} />
+            <BurgerIngredients data={data} />
+            <ConstructorIngredientsContext.Provider value={constructorIngredients}>
               <BurgerConstructor />
             </ConstructorIngredientsContext.Provider>
           </main>
