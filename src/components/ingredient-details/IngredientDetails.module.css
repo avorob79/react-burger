@@ -13,6 +13,10 @@
   height: 240px;
 }
 
+.name {
+  text-align: center;
+}
+
 .details {
   display: flex;
   flex-flow: row wrap;
