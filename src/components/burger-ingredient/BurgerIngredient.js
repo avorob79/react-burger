@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerIngredient.module.css';
-import {ingredientType} from '../utils/types';
+import {ingredientType} from '../../utils/types';
 
 function BurgerIngredient(props) {
   const {counter, item, extraClass} = props;

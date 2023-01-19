@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
-import BurgerIngredient from './BurgerIngredient';
-import IngredientDetails from './IngredientDetails';
-import Modal from './Modal';
+import BurgerIngredient from '../burger-ingredient/BurgerIngredient';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
+import Modal from '../modal/Modal';
 import styles from './BurgerIngredients.module.css';
-import {ingredientType} from '../utils/types';
+import {ingredientType} from '../../utils/types';
 
 function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState('one');

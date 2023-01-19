@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {DragIcon, CurrencyIcon, ConstructorElement, Button} from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderDetails from './OrderDetails';
-import Modal from './Modal';
+import OrderDetails from '../order-details/OrderDetails';
+import Modal from '../modal/Modal';
 import styles from './BurgerConstructor.module.css';
-import {ingredientType} from '../utils/types';
+import {ingredientType} from '../../utils/types';
 
 function BurgerConstructor(props) {
   const [isOpen, setIsOpen] = React.useState(false);

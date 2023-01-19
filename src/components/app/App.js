@@ -1,8 +1,8 @@
 import React from 'react';
-import AppHeader from './AppHeader';
-import BurgerIngredients from './BurgerIngredients';
-import BurgerConstructor from './BurgerConstructor';
-import Modal from './Modal';
+import AppHeader from '../app-header/AppHeader';
+import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
+import BurgerConstructor from '../burger-constructor/BurgerConstructor';
+import Modal from '../modal/Modal';
 import styles from './App.module.css';
 
 const url = "https://norma.nomoreparties.space/api/ingredients";
