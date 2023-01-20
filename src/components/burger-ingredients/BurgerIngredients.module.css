@@ -7,15 +7,15 @@
     display: flex;
 }
 
-.ingredients {
-    display: flex;
-    flex-flow: row wrap;
+.allIngredients {
     overflow-x: hidden;
     overflow-y: auto;
-    scrollbar-width: thin;
     height: calc(100% - 156px);
 }
 
-.type {
-    width: 100%;
+.ingredients {
+    display: flex;
+    flex-flow: row wrap;
+    column-gap: 24px;
+    row-gap: 32px;
 }

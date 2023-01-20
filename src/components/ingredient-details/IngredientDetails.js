@@ -1,12 +1,12 @@
 import styles from './IngredientDetails.module.css';
-import {ingredientType} from '../utils/types';
+import {ingredientType} from '../../utils/types';
 
 function IngredientDetails(props) {
   const {item} = props;
   return (
     <div className={styles.ingredientDetails}>
         <img src={item.image_large} alt={item.name} className={`${styles.image} ml-5 mr-5`} />
-        <p className="text text_type_main-medium mt-4">{item.name}</p>
+        <p className={`text text_type_main-medium ${styles.name} mt-4`}>{item.name}</p>
         <div className={`${styles.details} mt-8`}>
           <div className={styles.detail}>
             <p className="text text_type_main-default text_color_inactive mt-1">Калории,ккал</p>

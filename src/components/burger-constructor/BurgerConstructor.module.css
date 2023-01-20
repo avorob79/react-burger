@@ -1,0 +1,45 @@
+.burgerConstructor {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-content: flex-start;
+    row-gap: 16px;
+    width: 600px;
+    height: 100%;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+    list-style: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0;
+    width: 100%;
+    max-height: calc(100% - 436px);
+}
+
+.ingredient {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.emptyIngredient {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.order {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.currency svg {
+    vertical-align: middle;
+    width: 33px;
+    height: 33px;
+}
