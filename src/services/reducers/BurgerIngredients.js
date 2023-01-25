@@ -2,9 +2,9 @@ import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_ERROR,
-  SET_BUN_COUNT,
-  INCREASE_INGREDIENT_COUNT,
-  DECREASE_INGREDIENT_COUNT,
+  SET_BUN_COUNTER,
+  INCREASE_INGREDIENT_COUNTER,
+  DECREASE_INGREDIENT_COUNTER,
   SET_DETAILS,
   RESET_DETAILS
 } from '../actions/BurgerIngredients';
@@ -13,7 +13,7 @@ const initialState = {
   ingredients: [],
   ingredientsRequest: false,
 
-  counts: {},
+  counters: {},
 
   details: null
 };
@@ -39,30 +39,30 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
         ingredientsRequest: false,
       };
     }
-    case SET_BUN_COUNT: {
-      const counts = {...state.counts};
-      state.ingredients.filter(item => item.type === "bun" && !!counts[item._id]).forEach(item => counts[item._id] = 0);
-      counts[action.id] = (counts[action.id] || 0) + 2;
+    case SET_BUN_COUNTER: {
+      const counters = {...state.counters};
+      state.ingredients.filter(item => item.type === "bun" && !!counters[item._id]).forEach(item => counters[item._id] = 0);
+      counters[action.id] = (counters[action.id] || 0) + 2;
       return {
         ...state,
-        counts: counts
+        counters: counters
       };
     }
-    case INCREASE_INGREDIENT_COUNT: {
+    case INCREASE_INGREDIENT_COUNTER: {
       return {
         ...state,
-        counts: {
-          ...state.counts,
-          [action.id]: (state.counts[action.id] || 0) + 1
+        counters: {
+          ...state.counters,
+          [action.id]: (state.counters[action.id] || 0) + 1
         }
       };
     }
-    case DECREASE_INGREDIENT_COUNT: {
+    case DECREASE_INGREDIENT_COUNTER: {
       return {
         ...state,
-        counts: {
-          ...state.counts,
-          [action.id]: state.counts[action.id] - 1
+        counters: {
+          ...state.counters,
+          [action.id]: state.counters[action.id] - 1
         }
       };
     }
