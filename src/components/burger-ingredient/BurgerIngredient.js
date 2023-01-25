@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setDetails } from '../../services/actions/BurgerIngredients';
+import { setIngredientDetails } from '../../services/actions/ingredientDetails';
 import { ingredientType } from '../../utils/types';
 import styles from './BurgerIngredient.module.css';
 
@@ -16,7 +16,7 @@ function BurgerIngredient({counter, item, extraClass}) {
   });
 
   const showDetails = (e) => {
-    dispatch(setDetails(item));
+    dispatch(setIngredientDetails(item));
     e.stopPropagation();
   };
 

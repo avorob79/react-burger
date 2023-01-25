@@ -6,13 +6,13 @@ import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import Modal from '../modal/Modal';
-import { resetError } from '../../services/actions/App';
+import { resetError } from '../../services/actions/app';
 import styles from './App.module.css';
 
 function App() {
   const dispatch = useDispatch();
 
-  const error = useSelector(state => state.app.error);
+  const errors = useSelector(state => state.app.errors);
 
   const hideError = () => dispatch(resetError());
 
@@ -25,10 +25,10 @@ function App() {
           <BurgerConstructor />
         </DndProvider>
       </main>
-      {!!error &&
+      {!!errors && errors.length > 0 &&
         <Modal title="Ошибка" onClose={hideError}>
           <div className={styles.error}>
-            {error}
+            {errors[0]}
           </div>
         </Modal>
       }

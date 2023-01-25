@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import { burgerConstructorReducer } from './BurgerConstructor';
-import { burgerIngredientsReducer } from './BurgerIngredients';
-import { appReducer } from './App';
+import { burgerConstructorReducer } from './burgerConstructor';
+import { burgerIngredientsReducer } from './burgerIngredients';
+import { ingredientDetailsReducer } from './ingredientDetails';
+import { appReducer } from './app';
 
 export const rootReducer = combineReducers({
   app: appReducer,
   burgerConstructor: burgerConstructorReducer,
-  burgerIngredients: burgerIngredientsReducer
+  burgerIngredients: burgerIngredientsReducer,
+  ingredientDetails: ingredientDetailsReducer
 });

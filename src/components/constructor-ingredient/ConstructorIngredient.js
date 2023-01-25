@@ -1,9 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
+import PropTypes from 'prop-types';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import { replaceIngredient, removeIngredient } from '../../services/actions/BurgerConstructor';
-import { decreaseIngredientCounter } from '../../services/actions/BurgerIngredients';
+import { replaceIngredient, removeIngredient } from '../../services/actions/burgerConstructor';
+import { decreaseIngredientCounter } from '../../services/actions/burgerIngredients';
+import { ingredientType } from '../../utils/types';
 import styles from './ConstructorIngredient.module.css';
 
 function ConstructorIngredient({ item, index }) {
@@ -52,5 +54,10 @@ function ConstructorIngredient({ item, index }) {
     </li>
   );
 }
+
+ConstructorIngredient.propTypes = {
+  item: ingredientType.isRequired,
+  index: PropTypes.number.isRequired
+};
 
 export default React.memo(ConstructorIngredient);

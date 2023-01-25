@@ -1,16 +1,23 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import BurgerIngredient from '../burger-ingredient/BurgerIngredient';
+import IngredientsCategory from '../ingredients-category/IngredientsCategory';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import Modal from '../modal/Modal';
-import { getIngredients, resetDetails } from '../../services/actions/BurgerIngredients';
+import { getIngredients } from '../../services/actions/burgerIngredients';
+import { resetIngredientDetails } from '../../services/actions/ingredientDetails';
 import styles from './BurgerIngredients.module.css';
+
+const Tabs = {
+  BUN: "bun",
+  SAUCE: "sauce",
+  MAIN: "main"
+};
 
 function BurgerIngredients() {
   const dispatch = useDispatch();
 
-  const [currentTab, setCurrentTab] = useState("bun");
+  const [currentTab, setCurrentTab] = useState(Tabs.BUN);
 
   useEffect(
     () => dispatch(getIngredients()),
@@ -21,11 +28,10 @@ function BurgerIngredients() {
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
-  const { ingredients, counters, details } = useSelector(state =>
+  const { ingredients, details } = useSelector(state =>
   ({
     ingredients: state.burgerIngredients.ingredients,
-    counters: state.burgerIngredients.counters,
-    details: state.burgerIngredients.details
+    details: state.ingredientDetails.details
   }));
 
   const onTabClick = (tab) => {
@@ -34,29 +40,29 @@ function BurgerIngredients() {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   }
 
-  const buns = useMemo(() => ingredients.filter((item) => item.type === "bun"),
+  const buns = useMemo(() => ingredients.filter((item) => item.type === Tabs.BUN),
     [ingredients]
   );
 
-  const sauces = useMemo(() => ingredients.filter((item) => item.type === "sauce"),
+  const sauces = useMemo(() => ingredients.filter((item) => item.type === Tabs.SAUCE),
     [ingredients]
   );
 
-  const mains = useMemo(() => ingredients.filter((item) => item.type === "main"),
+  const mains = useMemo(() => ingredients.filter((item) => item.type === Tabs.MAIN),
     [ingredients]
   );
 
   const hideDetails = (e) => {
-    dispatch(resetDetails());
+    dispatch(resetIngredientDetails());
   };
 
   const handleScroll = (e) => {
     if (Math.abs(e.target.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top) <= Math.abs(e.target.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)) {
-      if (currentTab !== "bun") setCurrentTab("bun");
+      if (currentTab !== Tabs.BUN) setCurrentTab(Tabs.BUN);
     } else if (Math.abs(e.target.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top) <= Math.abs(e.target.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top)) {
-      if (currentTab !== "sauce") setCurrentTab("sauce");
+      if (currentTab !== Tabs.SAUCE) setCurrentTab(Tabs.SAUCE);
     } else {
-      if (currentTab !== "main") setCurrentTab("main");
+      if (currentTab !== Tabs.MAIN) setCurrentTab(Tabs.MAIN);
     }
   }
 
@@ -64,40 +70,19 @@ function BurgerIngredients() {
     <section className={styles.burgerIngredients}>
       <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
       <div className={styles.tabs}>
-        <Tab value="bun" active={currentTab === "bun"} onClick={onTabClick}>Булки</Tab>
-        <Tab value="sauce" active={currentTab === "sauce"} onClick={onTabClick}>Соусы</Tab>
-        <Tab value="main" active={currentTab === "main"} onClick={onTabClick}>Начинки</Tab>
+        <Tab value={Tabs.BUN} active={currentTab === Tabs.BUN} onClick={onTabClick}>Булки</Tab>
+        <Tab value={Tabs.SAUCE} active={currentTab === Tabs.SAUCE} onClick={onTabClick}>Соусы</Tab>
+        <Tab value={Tabs.MAIN} active={currentTab === Tabs.MAIN} onClick={onTabClick}>Начинки</Tab>
       </div>
-      <div onScroll={handleScroll} className={styles.allIngredients}>
+      <div onScroll={handleScroll} className={styles.ingredients}>
         {!!buns && buns.length > 0 &&
-          <>
-            <h3 id="bun" ref={bunRef} className={`text text_type_main-medium mt-10 mb-6`}>Булки</h3>
-            <div className={`${styles.ingredients} pl-4`}>
-              {buns.map((item) => (
-                <BurgerIngredient key={item._id} counter={counters[item._id]} item={item} />
-              ))}
-            </div>
-          </>
+          <IngredientsCategory ref={bunRef} id={Tabs.BUN} title="Булки" items={buns} />
         }
         {!!sauces && sauces.length > 0 &&
-          <>
-            <h3 id="sauce" ref={sauceRef} className={`text text_type_main-medium mt-10 mb-6`}>Соусы</h3>
-            <div className={`${styles.ingredients} pl-4`}>
-              {sauces.map((item) => (
-                <BurgerIngredient key={item._id} counter={counters[item._id]} item={item} />
-              ))}
-            </div>
-          </>
+          <IngredientsCategory ref={sauceRef} id={Tabs.SAUCE} title="Соусы" items={sauces} />
         }
         {!!mains && mains.length > 0 &&
-          <>
-            <h3 id="main" ref={mainRef} className={`text text_type_main-medium mt-10 mb-6`}>Начинки</h3>
-            <div className={`${styles.ingredients} pl-4`}>
-              {mains.map((item) => (
-                <BurgerIngredient key={item._id} counter={counters[item._id]} item={item} />
-              ))}
-            </div>
-          </>
+          <IngredientsCategory ref={mainRef} id={Tabs.MAIN} title="Начинки" items={mains} />
         }
       </div>
       {!!details &&

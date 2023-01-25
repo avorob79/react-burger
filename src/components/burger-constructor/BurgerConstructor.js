@@ -5,8 +5,8 @@ import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-de
 import ConstructorIngredient from '../constructor-ingredient/ConstructorIngredient';
 import OrderDetails from '../order-details/OrderDetails';
 import Modal from '../modal/Modal';
-import { setBunCounter, increaseIngredientCounter } from '../../services/actions/BurgerIngredients';
-import { setBun, addIngredient, getOrder, resetOrderDetails } from '../../services/actions/BurgerConstructor';
+import { setBunCounter, resetBunCounter, increaseIngredientCounter } from '../../services/actions/burgerIngredients';
+import { setBun, addIngredient, getOrder, resetOrderDetails } from '../../services/actions/burgerConstructor';
 import styles from './BurgerConstructor.module.css';
 
 function BurgerConstructor() {
@@ -20,13 +20,16 @@ function BurgerConstructor() {
   }));
 
   const totalPrice = useMemo(
-    () => (bun?.price ?? 0) * 2 + ingredients.filter((item) => item.type !== "bun").reduce((acc, item) => acc + item.price, 0),
+    () => (bun?.price ?? 0) * 2 + ingredients.reduce((acc, item) => acc + item.price, 0),
     [bun, ingredients]
   );
 
   const [, bunTarget1] = useDrop({
     accept: "bun",
     drop(item) {
+      if (!!bun) {
+        dispatch(resetBunCounter(bun._id));
+      }
       dispatch(setBun(item));
       dispatch(setBunCounter(item._id));
     }
@@ -35,6 +38,9 @@ function BurgerConstructor() {
   const [, bunTarget2] = useDrop({
     accept: "bun",
     drop(item) {
+      if (!!bun) {
+        dispatch(resetBunCounter(bun._id));
+      }
       dispatch(setBun(item));
       dispatch(setBunCounter(item._id));
     }
@@ -49,7 +55,7 @@ function BurgerConstructor() {
   });
 
   const showOrderDetails = () => {
-    dispatch(getOrder([bun._id, ...ingredients, bun._id]));
+    dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]));
   }
 
   const hideOrderDetails = () => {
