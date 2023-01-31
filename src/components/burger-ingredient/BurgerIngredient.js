@@ -1,17 +1,27 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useDrag } from 'react-dnd';
 import PropTypes from 'prop-types';
-import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { setIngredientDetails } from '../../services/actions/ingredientDetails';
+import { ingredientType } from '../../utils/types';
 import styles from './BurgerIngredient.module.css';
-import {ingredientType} from '../../utils/types';
 
-function BurgerIngredient(props) {
-  const {counter, item, extraClass} = props;
+function BurgerIngredient({counter, item, extraClass}) {
+  const dispatch = useDispatch();
+
+  const [, ref] = useDrag({
+    type: item.type === "bun" ? "bun" : "ingredient",
+    item: { ...item }
+  });
+
   const showDetails = (e) => {
-    props.showDetails(item);
+    dispatch(setIngredientDetails(item));
     e.stopPropagation();
   };
+
   return (
-    <div onClick={showDetails} className={`${styles.ingredient} ${extraClass}`}>
+    <div ref={ref} onClick={showDetails} className={`${styles.ingredient} ${extraClass}`}>
       {!!counter &&
         <Counter count={counter} size="default" />
       }
@@ -31,4 +41,4 @@ BurgerIngredient.propTypes = {
   extraClass: PropTypes.string
 };
 
-export default BurgerIngredient;
+export default React.memo(BurgerIngredient);

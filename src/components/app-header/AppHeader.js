@@ -6,18 +6,18 @@ function AppHeader(props) {
   return (
     <header>
       <nav className={styles.header}>
-        <a href="#" className={`button button_type_secondary button_size_medium ${styles.leftButton}`}>
+        <a href="url1" className={`button button_type_secondary button_size_medium ${styles.leftButton}`}>
           <BurgerIcon type="primary" />
           <p className={`text text_type_main-default pl-2 ${styles.buttonText}`}>Конструктор</p>
         </a>
-        <a href="#" disabled={true} className={`button button_type_secondary button_size_medium ${styles.leftButton} ml-2`}>
+        <a href="url2" disabled={true} className={`button button_type_secondary button_size_medium ${styles.leftButton} ml-2`}>
           <ListIcon type="primary" />
           <p className={`text text_type_main-default pl-2 ${styles.buttonText}`}>Лента заказов</p>
         </a>
         <div className={styles.logo}>
           <Logo />
         </div>
-        <a href="#" disabled={true} className={`button button_type_secondary button_size_medium ${styles.rightButton}`}>
+        <a href="url3" disabled={true} className={`button button_type_secondary button_size_medium ${styles.rightButton}`}>
           <ProfileIcon type="primary" />
           <p className={`text text_type_main-default pl-2 ${styles.buttonText}`}>Личный кабинет</p>
         </a>
@@ -26,4 +26,4 @@ function AppHeader(props) {
   );
 }
 
-export default AppHeader;
+export default React.memo(AppHeader);

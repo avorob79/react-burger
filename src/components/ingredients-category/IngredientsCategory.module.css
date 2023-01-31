@@ -1,0 +1,6 @@
+.ingredients {
+  display: flex;
+  flex-flow: row wrap;
+  column-gap: 24px;
+  row-gap: 32px;
+}

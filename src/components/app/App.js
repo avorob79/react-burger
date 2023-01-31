@@ -1,51 +1,39 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import AppHeader from '../app-header/AppHeader';
 import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
 import Modal from '../modal/Modal';
+import { resetError } from '../../services/actions/app';
 import styles from './App.module.css';
-import { ErrorContext } from '../../services/ErrorContext';
-import { ConstructorIngredientsContext } from '../../services/ConstructorIngredientsContext';
-import { burgerFetch } from '../../utils/burgerFetch';
 
 function App() {
-  const [data, setData] = React.useState(null);
-  const [error, setError] = React.useState(null);
+  const dispatch = useDispatch();
 
-  const hideError = (e) => setError(null);
+  const errors = useSelector(state => state.app.errors);
 
-  React.useEffect(() => {
-    burgerFetch("ingredients")
-      .then(result => setData(result.data))
-      .catch(e => setError(e.message));
-  }, []);
-
-  const constructorIngredients = useMemo(
-    () => !!data && data.length > 0 ? [data[1], data[3], ...data.slice(6, 9)] : [],
-    [data]);
+  const hideError = () => dispatch(resetError());
 
   return (
     <React.Fragment>
-      <ErrorContext.Provider value={{ error, setError }}>
-        <AppHeader />
-        {!!data &&
-          <main className={styles.main}>
-            <BurgerIngredients data={data} />
-            <ConstructorIngredientsContext.Provider value={constructorIngredients}>
-              <BurgerConstructor />
-            </ConstructorIngredientsContext.Provider>
-          </main>
-        }
-        {!!error &&
-          <Modal title="Ошибка" onClose={hideError}>
-            <div className={styles.error}>
-              {error}
-            </div>
-          </Modal>
-        }
-      </ErrorContext.Provider>
+      <AppHeader />
+      <main className={styles.main}>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </DndProvider>
+      </main>
+      {!!errors && errors.length > 0 &&
+        <Modal title="Ошибка" onClose={hideError}>
+          <div className={styles.error}>
+            {errors[0]}
+          </div>
+        </Modal>
+      }
     </React.Fragment>
   );
 }
 
-export default App;
+export default React.memo(App);
