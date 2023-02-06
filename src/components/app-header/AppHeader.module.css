@@ -1,6 +1,7 @@
 .header {
     margin: 0 auto;
     width: 1280px;
+    height: 88px;
 }
 
 .button {
@@ -21,7 +22,11 @@
 }
 
 .buttonText {
-    display:inline-block;
+    display: inline-block;
+}
+
+.activeLink{
+    color: var(--text-primary-color);
 }
 
 .logo {

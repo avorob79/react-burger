@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientsCategory from '../ingredients-category/IngredientsCategory';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
-import Modal from '../modal/Modal';
+import { IngredientsCategory, IngredientDetails, Modal } from '../';
 import { getIngredients } from '../../services/actions/burgerIngredients';
 import { resetIngredientDetails } from '../../services/actions/ingredientDetails';
 import styles from './BurgerIngredients.module.css';

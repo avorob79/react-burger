@@ -1,0 +1,27 @@
+.page {
+    display: flex;
+    column-gap: 60px;
+    margin: 120px auto 0 auto;
+    width: 1240px;
+}
+
+.menu {
+    width: 320px;
+}
+
+.linkList {
+    list-style: none;
+    padding: 0;
+}
+
+.link {
+    padding: 17px 0;
+}
+
+.activeLink{
+    color: var(--text-primary-color);
+}
+
+.form {
+    text-align: center;
+}
