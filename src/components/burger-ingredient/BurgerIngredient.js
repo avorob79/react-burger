@@ -1,27 +1,21 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setIngredientDetails } from '../../services/actions/ingredientDetails';
 import { ingredientType } from '../../utils/types';
 import styles from './BurgerIngredient.module.css';
 
-function BurgerIngredient({counter, item, extraClass}) {
-  const dispatch = useDispatch();
+function BurgerIngredient({ counter, item, extraClass }) {
+  const location = useLocation();
 
   const [, ref] = useDrag({
     type: item.type === "bun" ? "bun" : "ingredient",
     item: { ...item }
   });
 
-  const showDetails = (e) => {
-    dispatch(setIngredientDetails(item));
-    e.stopPropagation();
-  };
-
   return (
-    <div ref={ref} onClick={showDetails} className={`${styles.ingredient} ${extraClass}`}>
+    <Link ref={ref} to={"/ingredients/" + item._id} state={{ background: location }} className={styles.ingredient}>
       {!!counter &&
         <Counter count={counter} size="default" />
       }
@@ -31,7 +25,7 @@ function BurgerIngredient({counter, item, extraClass}) {
         <CurrencyIcon type="primary" />
       </div>
       <p className={`text text_type_main-default ${styles.name} mt-1`}>{item.name}</p>
-    </div>
+    </Link>
   );
 };
 

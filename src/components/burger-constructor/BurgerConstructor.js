@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,6 +10,7 @@ import styles from './BurgerConstructor.module.css';
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { bun, ingredients, orderRequest, orderDetails } = useSelector(state => ({
     bun: state.burgerConstructor.bun,
@@ -16,6 +18,8 @@ function BurgerConstructor() {
     orderRequest: state.burgerConstructor.orderRequest,
     orderDetails: state.burgerConstructor.orderDetails
   }));
+
+  const user = useSelector(state => state.auth.user);
 
   const totalPrice = useMemo(
     () => (bun?.price ?? 0) * 2 + ingredients.reduce((acc, item) => acc + item.price, 0),
@@ -53,7 +57,11 @@ function BurgerConstructor() {
   });
 
   const showOrderDetails = () => {
-    dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]));
+    if (!!user) {
+      dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]));
+    } else {
+      navigate("/login");
+    }
   }
 
   const hideOrderDetails = () => {

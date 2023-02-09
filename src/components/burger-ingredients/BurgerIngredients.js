@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useRef, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IngredientsCategory, IngredientDetails, Modal } from '../';
-import { getIngredients } from '../../services/actions/burgerIngredients';
-import { resetIngredientDetails } from '../../services/actions/ingredientDetails';
+import { IngredientsCategory } from '../';
 import styles from './BurgerIngredients.module.css';
 
 const Tabs = {
@@ -13,24 +11,13 @@ const Tabs = {
 };
 
 function BurgerIngredients() {
-  const dispatch = useDispatch();
-
   const [currentTab, setCurrentTab] = useState(Tabs.BUN);
-
-  useEffect(
-    () => dispatch(getIngredients()),
-    [dispatch]
-  );
 
   const bunRef = useRef(null);
   const sauceRef = useRef(null);
   const mainRef = useRef(null);
 
-  const { ingredients, details } = useSelector(state =>
-  ({
-    ingredients: state.burgerIngredients.ingredients,
-    details: state.ingredientDetails.details
-  }));
+  const ingredients = useSelector(state => state.burgerIngredients.ingredients);
 
   const onTabClick = (tab) => {
     setCurrentTab(tab);
@@ -49,10 +36,6 @@ function BurgerIngredients() {
   const mains = useMemo(() => ingredients.filter((item) => item.type === Tabs.MAIN),
     [ingredients]
   );
-
-  const hideDetails = (e) => {
-    dispatch(resetIngredientDetails());
-  };
 
   const handleScroll = (e) => {
     if (Math.abs(e.target.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top) <= Math.abs(e.target.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)) {
@@ -83,11 +66,6 @@ function BurgerIngredients() {
           <IngredientsCategory ref={mainRef} id={Tabs.MAIN} title="Начинки" items={mains} />
         }
       </div>
-      {!!details &&
-        <Modal title="Детали ингредиента" onClose={hideDetails}>
-          <IngredientDetails />
-        </Modal>
-      }
     </section>
   );
 }

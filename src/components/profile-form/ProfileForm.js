@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUser } from '../../services/actions/auth';
@@ -7,7 +7,12 @@ import styles from './ProfileForm.module.css';
 function ProfileForm() {
   const dispatch = useDispatch();
 
-  const user = useSelector(state => state.auth.user) || { name: "", email: "" };
+  let user = useSelector(state => state.auth.user);
+
+  user = useMemo(
+    () => user || { name: "", email: "" },
+    [user]
+  );
 
   const [form, setValue] = useState({
     ...user,

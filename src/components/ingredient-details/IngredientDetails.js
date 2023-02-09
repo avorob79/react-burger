@@ -1,9 +1,16 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './IngredientDetails.module.css';
 
 function IngredientDetails() {
-  const details = useSelector(state => state.ingredientDetails.details);
+  const { id } = useParams();
+  const ingredients = useSelector(state => state.burgerIngredients.ingredients);
+  const details = ingredients.find(item => item._id === id);
+
+  if (!details) {
+    return null;
+  }
 
   return (
     <div className={styles.ingredientDetails}>
