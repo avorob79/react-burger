@@ -1,10 +1,10 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { AppHeader, BurgerIngredients, BurgerConstructor, Modal, ProfileForm } from '../';
-import { LoginPage, RegisterPage, ForgotPasswordPage, ResetPasswordPage, ProfilePage } from '../../pages';
+import { AppHeader, BurgerIngredients, BurgerConstructor, Modal, ProfileForm, ProtectedRouteElement } from '../';
+import { ForgotPasswordPage, LoginPage, LogoutPage, ProfilePage, RegisterPage, ResetPasswordPage } from '../../pages';
 import { resetError } from '../../services/actions/app';
 import styles from './App.module.css';
 
@@ -25,7 +25,7 @@ function App() {
   );
 
   return (
-    <BrowserRouter>
+    <React.Fragment>
       <AppHeader />
       <Routes>
         <Route path="/" element={Main} />
@@ -33,10 +33,11 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/profile" element={<ProfilePage />}>
+        <Route path="/profile" element={<ProtectedRouteElement><ProfilePage /></ProtectedRouteElement>}>
           <Route index element={<ProfileForm />} />
           <Route path="orders" element={<div></div>} />
         </Route>
+        <Route path="/logout" element={<LogoutPage />} />
       </Routes>
       {!!errors && errors.length > 0 &&
         <Modal title="Ошибка" onClose={hideError}>
@@ -45,7 +46,7 @@ function App() {
           </div>
         </Modal>
       }
-    </BrowserRouter>
+    </React.Fragment>
   );
 }
 
