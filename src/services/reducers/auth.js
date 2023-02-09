@@ -14,9 +14,6 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
-  REFRESH_TOKEN_REQUEST,
-  REFRESH_TOKEN_SUCCESS,
-  REFRESH_TOKEN_ERROR,
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
   GET_USER_ERROR,
@@ -156,26 +153,6 @@ export const authReducer = (state = initialState, action) => {
         ...state,
         resetPasswordRequest: false,
         resetPasswordError: action.error
-      };
-    }
-    case REFRESH_TOKEN_REQUEST: {
-      return {
-        ...state,
-        refreshTokenRequest: true
-      };
-    }
-    case REFRESH_TOKEN_SUCCESS: {
-      return {
-        ...state,
-        refreshTokenRequest: false,
-        refreshTokenError: null
-      };
-    }
-    case REFRESH_TOKEN_ERROR: {
-      return {
-        ...state,
-        refreshTokenRequest: false,
-        refreshTokenError: action.error
       };
     }
     case GET_USER_REQUEST: {

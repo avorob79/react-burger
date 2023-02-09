@@ -15,12 +15,17 @@
     padding: 0;
 }
 
-.link {
+.linkList>li {
     padding: 17px 0;
 }
 
-.activeLink{
-    color: var(--text-primary-color);
+.link {
+    text-decoration: none;
+    color: #8585AD;
+}
+
+.activeLink {
+    color: #F2F2F3;
 }
 
 .form {

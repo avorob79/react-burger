@@ -1,5 +1,5 @@
 import { setError } from './app';
-import { burgerFetch } from '../../utils/burgerFetch';
+import { burgerFetch, fetchWithRefresh } from '../../utils/burgerFetch';
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookie';
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
@@ -21,10 +21,6 @@ export const FORGOT_PASSWORD_ERROR = 'FORGOT_PASSWORD_ERROR';
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR';
-
-export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
-export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
-export const REFRESH_TOKEN_ERROR = 'REFRESH_TOKEN_ERROR';
 
 export const GET_USER_REQUEST = 'GET_USER_REQUEST';
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
@@ -191,33 +187,35 @@ export function resetPassword(password, code) {
   };
 }
 
-export function refreshToken() {
+export function getUser() {
   return function (dispatch) {
     dispatch({
-      type: REFRESH_TOKEN_REQUEST
+      type: GET_USER_REQUEST
     });
-    return burgerFetch("auth/token", {
-      method: 'POST',
+    return fetchWithRefresh("auth/user", ({
+      method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        token: getCookie("refreshToken")
+        'Content-Type': 'application/json',
+        Authorization: "Bearer " + getCookie("token")
+      }
+    }),
+      "auth/token", ({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          token: getCookie("refreshToken")
+        })
       })
-    }).then(result => {
-      const accessToken = result.accessToken.split("Bearer ")[1];
-      if (!!accessToken) {
-        setCookie("token", accessToken);
-      }
-      if (!!result.refreshToken) {
-        setCookie("refreshToken", result.refreshToken);
-      }
+    ).then(result => {
       dispatch({
-        type: REFRESH_TOKEN_SUCCESS
+        type: GET_USER_SUCCESS,
+        user: result.user
       });
     }).catch(e => {
       dispatch({
-        type: REFRESH_TOKEN_ERROR,
+        type: GET_USER_ERROR,
         error: e.message
       });
       dispatch(setError(e.message));
@@ -225,49 +223,12 @@ export function refreshToken() {
   };
 }
 
-export function getUser(isRefresh = false) {
+export function updateUser(name, email, password) {
   return function (dispatch) {
-    if (!isRefresh) {
-      dispatch({
-        type: GET_USER_REQUEST
-      });
-    }
-    return burgerFetch("auth/user", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: "Bearer " + getCookie("token")
-      }
-    }).then(result => {
-      dispatch({
-        type: GET_USER_SUCCESS,
-        user: result.user
-      });
-    }).catch(e => {
-      if (!isRefresh && e.status === 403) {
-        dispatch(refreshToken(getUser(false)))
-          .then(() => {
-            dispatch(getUser(true));
-          });
-      } else {
-        dispatch({
-          type: GET_USER_ERROR,
-          error: e.message
-        });
-        dispatch(setError(e.message));
-      }
+    dispatch({
+      type: UPDATE_USER_REQUEST
     });
-  };
-}
-
-export function updateUser(name, email, password, isRefresh = false) {
-  return function (dispatch) {
-    if (!isRefresh) {
-      dispatch({
-        type: UPDATE_USER_REQUEST
-      });
-    }
-    return burgerFetch("auth/user", {
+    return fetchWithRefresh("auth/user", ({
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -278,24 +239,27 @@ export function updateUser(name, email, password, isRefresh = false) {
         email,
         password
       })
-    }).then(result => {
+    }),
+      "auth/token", ({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          token: getCookie("refreshToken")
+        })
+      })
+    ).then(result => {
       dispatch({
         type: UPDATE_USER_SUCCESS,
         user: result.user
       });
     }).catch(e => {
-      if (!isRefresh && e.status === 403) {
-        dispatch(refreshToken())
-          .then(() => {
-            dispatch(updateUser(name, email, password, true));
-          });
-      } else {
-        dispatch({
-          type: UPDATE_USER_ERROR,
-          error: e.message
-        });
-        dispatch(setError(e.message));
-      }
+      dispatch({
+        type: UPDATE_USER_ERROR,
+        error: e.message
+      });
+      dispatch(setError(e.message));
     });
   };
 }

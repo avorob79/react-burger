@@ -5,7 +5,7 @@ import styles from './ProfilePage.module.css';
 function ProfilePage() {
   const { pathname } = useLocation();
 
-  const linkClass = (isActive) => "button button_type_secondary text text_type_main-medium" + (isActive ? " " + styles.activeLink : "");
+  const linkClass = (isActive) => `button button_type_secondary text text_type_main-medium ${styles.link}${isActive ? " " + styles.activeLink : ""}`;
 
   return (
     <div className={`${styles.page}`}>

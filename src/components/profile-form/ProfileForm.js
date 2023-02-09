@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUser } from '../../services/actions/auth';
+import useForm from '../../hooks/useForm';
 import styles from './ProfileForm.module.css';
 
 function ProfileForm() {
@@ -9,38 +10,26 @@ function ProfileForm() {
 
   let user = useSelector(state => state.auth.user);
 
-  user = useMemo(
-    () => user || { name: "", email: "" },
-    [user]
-  );
-
-  const [form, setValue] = useState({
+  const { values, setValues, handleChange } = useForm({
     ...user,
     password: ""
   });
 
   useEffect(() => {
-    setValue({
+    setValues({
       ...user,
       password: ""
     })
-  }, [user]);
-
-  const handleChange = (e) => {
-    setValue({
-      ...form,
-      [e.target.name]: e.target.value
-    });
-  };
+  }, [setValues, user]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUser(form.name, form.email, form.password));
+    dispatch(updateUser(values.name, values.email, values.password));
   }
 
   const handleCancel = (e) => {
     e.preventDefault();
-    setValue({
+    setValues({
       ...user,
       password: ""
     });
@@ -48,13 +37,13 @@ function ProfileForm() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <Input type="text" name="name" placeholder="Имя" icon="EditIcon" value={form.name} onChange={handleChange} />
-      <EmailInput name="email" placeholder="Логин" isIcon={true} value={form.email} onChange={handleChange} extraClass="mt-6" />
-      <PasswordInput name="password" placeholder="Пароль" icon="EditIcon" value={form.password} onChange={handleChange} extraClass="mt-6" />
-      {(form.name !== user.name || form.email !== user.email || !!form.password) && (
+      <Input type="text" name="name" placeholder="Имя" icon="EditIcon" value={values?.name} onChange={handleChange} />
+      <EmailInput name="email" placeholder="Логин" isIcon={true} value={values?.email} onChange={handleChange} extraClass="mt-6" />
+      <PasswordInput name="password" placeholder="Пароль" icon="EditIcon" value={values.password} onChange={handleChange} extraClass="mt-6" />
+      {(values?.name !== user.name || values?.email !== user.email || !!values.password) && (
         <React.Fragment>
-          <Button htmlType="submit" type="primary" size="large" extraClass={`${styles.button} mt-6 mr-5`}>Сохранить</Button>
-          <Button htmlType="button" type="primary" size="large" onClick={handleCancel} extraClass={`${styles.button} mt-6 ml-5`}>Отмена</Button>
+          <Button htmlType="button" type="secondary" size="large" onClick={handleCancel} extraClass={`${styles.button} mt-6`}>Отмена</Button>
+          <Button htmlType="submit" type="primary" size="large" extraClass={`${styles.button} mt-6`}>Сохранить</Button>
         </React.Fragment>
       )}
     </form>
