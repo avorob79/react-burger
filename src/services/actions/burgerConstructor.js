@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { setError } from './app';
 import { burgerFetch } from '../../utils/burgerFetch';
+import { getCookie } from '../../utils/cookie';
 
 export const SET_BUN = 'SET_BUN';
 export const ADD_INGREDIENT = 'ADD_INGREDIENT';
@@ -48,7 +49,10 @@ export function getOrder(ids) {
     burgerFetch("orders",
       {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: "Bearer " + getCookie("token")
+        },
         body: JSON.stringify({ ingredients: ids })
       })
       .then(result => dispatch({

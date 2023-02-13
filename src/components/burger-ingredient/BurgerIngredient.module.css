@@ -1,6 +1,8 @@
 .ingredient {
     position: relative;
     text-align: center;
+    text-decoration: none;
+    color: var(--text-primary-color);
     width: 272px;
 }
 

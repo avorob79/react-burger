@@ -1,6 +1,11 @@
 .header {
+    background-color: #1C1C21;
+}
+
+.nav {
     margin: 0 auto;
     width: 1280px;
+    height: 88px;
 }
 
 .button {
@@ -21,7 +26,16 @@
 }
 
 .buttonText {
-    display:inline-block;
+    display: inline-block;
+}
+
+.link {
+    text-decoration: none;
+    color: #8585AD; 
+}
+
+.activeLink {
+    color: #F2F2F3;
 }
 
 .logo {
