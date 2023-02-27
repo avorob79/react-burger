@@ -1,14 +1,18 @@
-import React, { useCallback, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
+import { DropTargetMonitor, XYCoord, useDrag, useDrop } from 'react-dnd';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { replaceIngredient, removeIngredient } from '../../services/actions/burgerConstructor';
 import { decreaseIngredientCounter } from '../../services/actions/burgerIngredients';
-import { ingredientType } from '../../utils/types';
+import { IIngredientExt } from '../../utils/types';
 import styles from './ConstructorIngredient.module.css';
 
-function ConstructorIngredient({ item, index }) {
+interface IProps {
+  item: IIngredientExt;
+  index: number;
+}
+
+const ConstructorIngredient: FC<IProps> = ({ item, index }) => {
   const dispatch = useDispatch();
 
   const [, dragRef] = useDrag({
@@ -18,7 +22,7 @@ function ConstructorIngredient({ item, index }) {
 
   const [, dropRef] = useDrop({
     accept: "item",
-    hover: (item, monitor) => {
+    hover: (item: { index: number }, monitor: DropTargetMonitor) => {
       if (!ref.current) return;
 
       const dragIndex = item.index;
@@ -28,7 +32,7 @@ function ConstructorIngredient({ item, index }) {
 
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const hoverClientY = monitor.getClientOffset().y - hoverBoundingRect.top;
+      const hoverClientY = (monitor.getClientOffset() as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
@@ -38,9 +42,9 @@ function ConstructorIngredient({ item, index }) {
     }
   });
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
-  const dragDropRef = dragRef(dropRef(ref));
+  dragRef(dropRef(ref));
 
   const remove = useCallback(() => {
     dispatch(removeIngredient(item.key));
@@ -48,16 +52,11 @@ function ConstructorIngredient({ item, index }) {
   }, [dispatch, item]);
 
   return (
-    <li ref={dragDropRef} className={styles.ingredient}>
+    <li ref={ref} className={styles.ingredient}>
       <DragIcon type="primary" />
       <ConstructorElement text={item.name} price={item.price} thumbnail={item.image_mobile} handleClose={remove} extraClass="ml-2" />
     </li>
   );
-}
-
-ConstructorIngredient.propTypes = {
-  item: ingredientType.isRequired,
-  index: PropTypes.number.isRequired
 };
 
 export default React.memo(ConstructorIngredient);

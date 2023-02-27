@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './OrderDetails.module.css';
 
-function OrderDetails() {
-  const order = useSelector(state => state.burgerConstructor.order);
+const OrderDetails: FC = () => {
+  const order = useSelector((state: any) => state.burgerConstructor.order);
 
   return (
     <div className={styles.orderDetails}>

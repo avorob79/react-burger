@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd';
@@ -6,20 +6,21 @@ import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-de
 import { ConstructorIngredient, OrderDetails, Modal } from '../';
 import { setBunCounter, resetBunCounter, increaseIngredientCounter } from '../../services/actions/burgerIngredients';
 import { setBun, addIngredient, getOrder, resetOrderDetails } from '../../services/actions/burgerConstructor';
+import { IIngredient, IIngredientExt } from '../../utils/types';
 import styles from './BurgerConstructor.module.css';
 
-function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { bun, ingredients, orderRequest, orderDetails } = useSelector(state => ({
-    bun: state.burgerConstructor.bun,
-    ingredients: state.burgerConstructor.ingredients,
+  const { bun, ingredients, orderRequest, orderDetails } = useSelector((state: any) => ({
+    bun: state.burgerConstructor.bun as IIngredient,
+    ingredients: state.burgerConstructor.ingredients as IIngredientExt[],
     orderRequest: state.burgerConstructor.orderRequest,
     orderDetails: state.burgerConstructor.orderDetails
   }));
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector((state: any) => state.auth.user);
 
   const totalPrice = useMemo(
     () => (bun?.price ?? 0) * 2 + ingredients.reduce((acc, item) => acc + item.price, 0),
@@ -28,7 +29,7 @@ function BurgerConstructor() {
 
   const [, bunTarget1] = useDrop({
     accept: "bun",
-    drop(item) {
+    drop(item: IIngredient) {
       if (!!bun) {
         dispatch(resetBunCounter(bun._id));
       }
@@ -39,7 +40,7 @@ function BurgerConstructor() {
 
   const [, bunTarget2] = useDrop({
     accept: "bun",
-    drop(item) {
+    drop(item: IIngredient) {
       if (!!bun) {
         dispatch(resetBunCounter(bun._id));
       }
@@ -50,7 +51,7 @@ function BurgerConstructor() {
 
   const [, ingredientsTarget] = useDrop({
     accept: "ingredient",
-    drop(item) {
+    drop(item: IIngredient) {
       dispatch(addIngredient(item));
       dispatch(increaseIngredientCounter(item._id));
     }
@@ -58,7 +59,7 @@ function BurgerConstructor() {
 
   const showOrderDetails = () => {
     if (!!user) {
-      dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]));
+      dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id] as string[]) as any);
     } else {
       navigate("/login");
     }
@@ -107,6 +108,6 @@ function BurgerConstructor() {
       }
     </section>
   );
-}
+};
 
 export default React.memo(BurgerConstructor);

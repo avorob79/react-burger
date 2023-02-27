@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
@@ -11,18 +11,18 @@ import { getUser } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookie';
 import styles from './App.module.css';
 
-function App() {
+const App: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isUserRequest, setUserRequest] = useState(true);
+  const [isUserRequest, setUserRequest] = useState<boolean>(true);
 
   useEffect(
     () => {
-      dispatch(getIngredients());
+      dispatch(getIngredients() as any);
       if (!!getCookie("token")) {
-        dispatch(getUser())
+        dispatch(getUser() as any)
           .finally(() => setUserRequest(false));
       } else {
         setUserRequest(false);
@@ -33,7 +33,7 @@ function App() {
 
   const background = location.state && location.state.background;
 
-  const errors = useSelector(state => state.app.errors);
+  const errors = useSelector((state: any) => state.app.errors as string[]);
 
   const hideIngredientDetails = () => navigate("/", { replace: true });
 

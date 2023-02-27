@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
-import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredientType } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
 import styles from './BurgerIngredient.module.css';
 
-function BurgerIngredient({ counter, item, extraClass }) {
+interface IProps {
+  counter: number;
+  item: IIngredient;
+}
+
+const BurgerIngredient: FC<IProps> = ({ counter, item }) => {
   const location = useLocation();
 
   const [, ref] = useDrag({
@@ -27,12 +31,6 @@ function BurgerIngredient({ counter, item, extraClass }) {
       <p className={`text text_type_main-default ${styles.name} mt-1`}>{item.name}</p>
     </Link>
   );
-};
-
-BurgerIngredient.propTypes = {
-  counter: PropTypes.number,
-  item: ingredientType.isRequired,
-  extraClass: PropTypes.string
 };
 
 export default React.memo(BurgerIngredient);
