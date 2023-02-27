@@ -1,26 +1,28 @@
-import React from 'react';
+import React, { FC, FormEvent } from 'react';
 import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { resetPassword } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
+import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './ResetPasswordPage.module.css';
 
-function ResetPasswordPage() {
+const ResetPasswordPage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useSelector(state => state.auth.user);
+  const user = useSelector(selectors.user) as IUser;
 
-  const { values, handleChange } = useForm({
+  const { values, handleChange } = useForm<{ password: string; code: string }>({
     password: "",
     code: ""
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(resetPassword(values.password, values.code))
+    dispatch(resetPassword(values.password, values.code) as any)
       .then(() => navigate("/login", { replace: true }));
   };
 

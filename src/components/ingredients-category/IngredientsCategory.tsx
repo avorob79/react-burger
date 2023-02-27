@@ -1,12 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import { BurgerIngredient } from '../';
-import { ingredientType } from '../../utils/types';
+import { IIngredient } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './IngredientsCategory.module.css';
 
-const IngredientsCategory = React.forwardRef(function IngredientsCategory({ id, title, items }, ref) {
-  const counters = useSelector(state => state.burgerIngredients.counters);
+interface IProps {
+  id: string;
+  title: string;
+  items: IIngredient[];
+}
+
+const IngredientsCategory = React.forwardRef<HTMLHeadingElement, IProps>(({ id, title, items }, ref) => {
+  const counters = useSelector(selectors.counters);
 
   return (
     <React.Fragment>
@@ -19,11 +25,5 @@ const IngredientsCategory = React.forwardRef(function IngredientsCategory({ id, 
     </React.Fragment>
   );
 });
-
-IngredientsCategory.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(ingredientType.isRequired).isRequired
-};
 
 export default React.memo(IngredientsCategory);

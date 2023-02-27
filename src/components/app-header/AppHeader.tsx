@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { BurgerIcon, ListIcon, ProfileIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './AppHeader.module.css';
 
-function AppHeader() {
-  const linkClass = (isActive, other) => `button button_type_secondary button_size_medium ${styles.link}${isActive ? " " + styles.activeLink : ""}${!!other ? " " + other : ""}`;
-
+const AppHeader: FC = () => {
+  const linkClass = (isActive: boolean, other?: string): string => `button button_type_secondary button_size_medium ${styles.link}${isActive ? " " + styles.activeLink : ""}${!!other ? " " + other : ""}`;
 
   return (
     <header className={styles.header}>
@@ -28,6 +27,6 @@ function AppHeader() {
       </nav>
     </header>
   );
-}
+};
 
 export default React.memo(AppHeader);

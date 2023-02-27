@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { IngredientDetails } from '../../components';
 import styles from './IngredientDetailsPage.module.css';
 
-function IngredientDetailsPage() {
+const IngredientDetailsPage: FC = () => {
   return (
     <div className={styles.page}>
       <h1 className="text text_type_main-large">Детали ингредиента</h1>

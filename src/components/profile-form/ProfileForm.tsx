@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { FC, FormEvent, SyntheticEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { updateUser } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
+import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './ProfileForm.module.css';
 
-function ProfileForm() {
+const ProfileForm: FC = () => {
   const dispatch = useDispatch();
 
-  let user = useSelector(state => state.auth.user);
+  const user = useSelector(selectors.user) as IUser;
 
-  const { values, setValues, handleChange } = useForm({
+  const { values, setValues, handleChange } = useForm<IUser & { password: string }>({
     ...user,
     password: ""
   });
@@ -22,12 +24,12 @@ function ProfileForm() {
     })
   }, [setValues, user]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(updateUser(values.name, values.email, values.password));
+    dispatch(updateUser(values.name, values.email, values.password) as any);
   }
 
-  const handleCancel = (e) => {
+  const handleCancel = (e: SyntheticEvent) => {
     e.preventDefault();
     setValues({
       ...user,
@@ -48,6 +50,6 @@ function ProfileForm() {
       )}
     </form>
   );
-}
+};
 
 export default React.memo(ProfileForm);

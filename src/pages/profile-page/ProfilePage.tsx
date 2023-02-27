@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import styles from './ProfilePage.module.css';
 
-function ProfilePage() {
+const ProfilePage: FC = () => {
   const { pathname } = useLocation();
 
-  const linkClass = (isActive) => `button button_type_secondary text text_type_main-medium ${styles.link}${isActive ? " " + styles.activeLink : ""}`;
+  const linkClass = (isActive: boolean) => `button button_type_secondary text text_type_main-medium ${styles.link}${isActive ? " " + styles.activeLink : ""}`;
 
   return (
     <div className={`${styles.page}`}>
@@ -30,6 +30,6 @@ function ProfilePage() {
       <Outlet />
     </div>
   );
-}
+};
 
 export default React.memo(ProfilePage);

@@ -1,7 +1,9 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { FC, useState, useRef, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientsCategory } from '../';
+import { IIngredient } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './BurgerIngredients.module.css';
 
 const Tabs = {
@@ -10,16 +12,17 @@ const Tabs = {
   MAIN: "main"
 };
 
-function BurgerIngredients() {
-  const [currentTab, setCurrentTab] = useState(Tabs.BUN);
+const BurgerIngredients: FC = () => {
+  const [currentTab, setCurrentTab] = useState<string>(Tabs.BUN);
 
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const bunRef = useRef<HTMLHeadingElement>(null);
+  const sauceRef = useRef<HTMLHeadingElement>(null);
+  const mainRef = useRef<HTMLHeadingElement>(null);
 
-  const ingredients = useSelector(state => state.burgerIngredients.ingredients);
+  const ingredients = useSelector(selectors.ingredients) as Array<IIngredient>;
 
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: string) => {
     setCurrentTab(tab);
     const element = document.getElementById(tab);
     if (element) element.scrollIntoView({ behavior: "smooth" });
@@ -37,13 +40,15 @@ function BurgerIngredients() {
     [ingredients]
   );
 
-  const handleScroll = (e) => {
-    if (Math.abs(e.target.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top) <= Math.abs(e.target.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)) {
-      if (currentTab !== Tabs.BUN) setCurrentTab(Tabs.BUN);
-    } else if (Math.abs(e.target.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top) <= Math.abs(e.target.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top)) {
-      if (currentTab !== Tabs.SAUCE) setCurrentTab(Tabs.SAUCE);
-    } else {
-      if (currentTab !== Tabs.MAIN) setCurrentTab(Tabs.MAIN);
+  const handleScroll = () => {
+    if (!!ref.current) {
+      if (bunRef.current && sauceRef.current && Math.abs(ref.current.getBoundingClientRect().top - bunRef.current.getBoundingClientRect().top) <= Math.abs(ref.current.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top)) {
+        if (currentTab !== Tabs.BUN) setCurrentTab(Tabs.BUN);
+      } else if (!!sauceRef.current && mainRef.current && Math.abs(ref.current.getBoundingClientRect().top - sauceRef.current.getBoundingClientRect().top) <= Math.abs(ref.current.getBoundingClientRect().top - mainRef.current.getBoundingClientRect().top)) {
+        if (currentTab !== Tabs.SAUCE) setCurrentTab(Tabs.SAUCE);
+      } else {
+        if (currentTab !== Tabs.MAIN) setCurrentTab(Tabs.MAIN);
+      }
     }
   }
 
@@ -55,7 +60,7 @@ function BurgerIngredients() {
         <Tab value={Tabs.SAUCE} active={currentTab === Tabs.SAUCE} onClick={onTabClick}>Соусы</Tab>
         <Tab value={Tabs.MAIN} active={currentTab === Tabs.MAIN} onClick={onTabClick}>Начинки</Tab>
       </div>
-      <div onScroll={handleScroll} className={styles.ingredients}>
+      <div ref={ref} onScroll={handleScroll} className={styles.ingredients}>
         {!!buns && buns.length > 0 &&
           <IngredientsCategory ref={bunRef} id={Tabs.BUN} title="Булки" items={buns} />
         }
@@ -68,6 +73,6 @@ function BurgerIngredients() {
       </div>
     </section>
   );
-}
+};
 
 export default React.memo(BurgerIngredients);

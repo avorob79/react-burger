@@ -1,12 +1,12 @@
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string, props: { [key: string]: string | number | Date | boolean } = {}) {
   props = props || {};
   let exp = props.expires;
-  if (typeof exp == 'number' && exp) {
+  if (!!exp && typeof exp == 'number') {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
-  if (exp && exp.toUTCString) {
+  if (!!exp && exp instanceof Date) {
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);
@@ -21,13 +21,13 @@ export function setCookie(name, value, props) {
   document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name: string): string | undefined {
   const matches = document.cookie.match(
     new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')  // eslint-disable-line no-useless-escape
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function deleteCookie(name) {
-  setCookie(name, null, { expires: -1 });
+export function deleteCookie(name: string) {
+  setCookie(name, '', { expires: -1 });
 }
