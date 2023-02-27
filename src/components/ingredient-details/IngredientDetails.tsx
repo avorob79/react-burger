@@ -2,11 +2,14 @@ import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { IIngredient } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './IngredientDetails.module.css';
 
 const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const ingredients = useSelector((state: any) => state.burgerIngredients.ingredients as IIngredient[]);
+
+  const ingredients = useSelector(selectors.ingredients) as Array<IIngredient>;
+
   const details = ingredients.find(item => item._id === id);
 
   if (!details) {

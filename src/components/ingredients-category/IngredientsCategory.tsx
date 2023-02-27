@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { BurgerIngredient } from '../';
 import { IIngredient } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './IngredientsCategory.module.css';
 
 interface IProps {
@@ -11,7 +12,7 @@ interface IProps {
 }
 
 const IngredientsCategory = React.forwardRef<HTMLHeadingElement, IProps>(({ id, title, items }, ref) => {
-  const counters = useSelector((state: any) => state.burgerIngredients.counters);
+  const counters = useSelector(selectors.counters);
 
   return (
     <React.Fragment>

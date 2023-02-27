@@ -5,6 +5,7 @@ import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-comp
 import { forgotPassword } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
 import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './ForgotPasswordPage.module.css';
 
 const ForgotPasswordPage: FC = () => {
@@ -12,7 +13,7 @@ const ForgotPasswordPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useSelector((state: any) => state.auth.user as IUser);
+  const user = useSelector(selectors.user) as IUser;
 
   const { values, handleChange } = useForm<{ email: string }>({ email: "" });
 

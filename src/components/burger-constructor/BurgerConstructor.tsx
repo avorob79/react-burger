@@ -6,21 +6,20 @@ import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-de
 import { ConstructorIngredient, OrderDetails, Modal } from '../';
 import { setBunCounter, resetBunCounter, increaseIngredientCounter } from '../../services/actions/burgerIngredients';
 import { setBun, addIngredient, getOrder, resetOrderDetails } from '../../services/actions/burgerConstructor';
-import { IIngredient, IIngredientExt } from '../../utils/types';
+import { IUser, IIngredient, IIngredientExt } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './BurgerConstructor.module.css';
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { bun, ingredients, orderRequest, orderDetails } = useSelector((state: any) => ({
-    bun: state.burgerConstructor.bun as IIngredient,
-    ingredients: state.burgerConstructor.ingredients as IIngredientExt[],
-    orderRequest: state.burgerConstructor.orderRequest,
-    orderDetails: state.burgerConstructor.orderDetails
-  }));
+  const bun = useSelector(selectors.bun) as IIngredient;
+  const ingredients = useSelector(selectors.selectedIngredients) as IIngredientExt[];
+  const orderRequest = useSelector(selectors.orderRequest) as boolean;
+  const orderDetails = useSelector(selectors.orderDetails) as boolean;
 
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useSelector(selectors.user) as IUser;
 
   const totalPrice = useMemo(
     () => (bun?.price ?? 0) * 2 + ingredients.reduce((acc, item) => acc + item.price, 0),

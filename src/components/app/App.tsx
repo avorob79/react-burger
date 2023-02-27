@@ -9,6 +9,7 @@ import { getIngredients } from '../../services/actions/burgerIngredients';
 import { resetError } from '../../services/actions/app';
 import { getUser } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookie';
+import { selectors } from '../../services';
 import styles from './App.module.css';
 
 const App: FC = () => {
@@ -33,7 +34,7 @@ const App: FC = () => {
 
   const background = location.state && location.state.background;
 
-  const errors = useSelector((state: any) => state.app.errors as string[]);
+  const errors = useSelector(selectors.errors) as Array<string>;
 
   const hideIngredientDetails = () => navigate("/", { replace: true });
 

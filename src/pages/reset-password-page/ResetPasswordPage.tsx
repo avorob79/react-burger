@@ -5,6 +5,7 @@ import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burg
 import { resetPassword } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
 import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './ResetPasswordPage.module.css';
 
 const ResetPasswordPage: FC = () => {
@@ -12,7 +13,7 @@ const ResetPasswordPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useSelector((state: any) => state.auth.user as IUser);
+  const user = useSelector(selectors.user) as IUser;
 
   const { values, handleChange } = useForm<{ password: string; code: string }>({
     password: "",

@@ -5,13 +5,14 @@ import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer
 import { login } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
 import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './LoginPage.module.css';
 
 const LoginPage: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const user = useSelector((state: any) => state.auth.user as IUser);
+  const user = useSelector(selectors.user) as IUser;
 
   const { values, handleChange } = useForm<{ email: string; password: string }>({
     email: "",

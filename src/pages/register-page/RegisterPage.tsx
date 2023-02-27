@@ -5,12 +5,13 @@ import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-de
 import { register } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
 import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './RegisterPage.module.css';
 
 const RegisterPage: FC = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector((state: any) => state.auth.user as IUser);
+  const user = useSelector(selectors.user) as IUser;
 
   const { values, handleChange } = useForm<IUser & { password: string }>({
     name: "",

@@ -4,12 +4,13 @@ import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-de
 import { updateUser } from '../../services/actions/auth';
 import useForm from '../../hooks/useForm';
 import { IUser } from '../../utils/types';
+import { selectors } from '../../services';
 import styles from './ProfileForm.module.css';
 
 const ProfileForm: FC = () => {
   const dispatch = useDispatch();
 
-  let user = useSelector((state: any) => state.auth.user as IUser);
+  const user = useSelector(selectors.user) as IUser;
 
   const { values, setValues, handleChange } = useForm<IUser & { password: string }>({
     ...user,
