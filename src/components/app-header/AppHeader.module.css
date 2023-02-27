@@ -34,8 +34,16 @@
     color: #8585AD; 
 }
 
+.link svg {
+    fill: #8585AD; 
+}
+
 .activeLink {
     color: #F2F2F3;
+}
+
+.activeLink svg {
+    fill: #F2F2F3;
 }
 
 .logo {
