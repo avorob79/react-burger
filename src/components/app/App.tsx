@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { AppHeader, BurgerIngredients, BurgerConstructor, IngredientDetails, Loader, Modal, ProfileForm, ProtectedRouteElement } from '../';
 import { ForgotPasswordPage, IngredientDetailsPage, LoginPage, LogoutPage, NotFoundPage, ProfilePage, RegisterPage, ResetPasswordPage } from '../../pages';
+import { useDispatch, useSelector } from '../../hooks';
 import { getIngredients } from '../../services/actions/burgerIngredients';
 import { resetError } from '../../services/actions/app';
 import { getUser } from '../../services/actions/auth';
@@ -21,9 +21,9 @@ const App: FC = () => {
 
   useEffect(
     () => {
-      dispatch(getIngredients() as any);
+      dispatch(getIngredients());
       if (!!getCookie("token")) {
-        dispatch(getUser() as any)
+        dispatch(getUser())
           .finally(() => setUserRequest(false));
       } else {
         setUserRequest(false);
@@ -34,7 +34,7 @@ const App: FC = () => {
 
   const background = location.state && location.state.background;
 
-  const errors = useSelector(selectors.errors) as Array<string>;
+  const errors = useSelector(selectors.errors);
 
   const hideIngredientDetails = () => navigate("/", { replace: true });
 

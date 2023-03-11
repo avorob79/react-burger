@@ -1,10 +1,8 @@
 import React, { FC, FormEvent } from 'react';
 import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useForm, useDispatch, useSelector } from '../../hooks';
 import { forgotPassword } from '../../services/actions/auth';
-import useForm from '../../hooks/useForm';
-import { IUser } from '../../utils/types';
 import { selectors } from '../../services';
 import styles from './ForgotPasswordPage.module.css';
 
@@ -13,13 +11,13 @@ const ForgotPasswordPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useSelector(selectors.user) as IUser;
+  const user = useSelector(selectors.user);
 
   const { values, handleChange } = useForm<{ email: string }>({ email: "" });
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(forgotPassword(values.email) as any)
+    dispatch(forgotPassword(values.email))
       .then(() => navigate("/reset-password", { replace: true, state: { prevPathName: location.pathname } }));
   };
 

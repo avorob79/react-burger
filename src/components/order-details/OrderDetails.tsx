@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from '../../hooks';
 import { selectors } from '../../services';
 import styles from './OrderDetails.module.css';
 
 const OrderDetails: FC = () => {
-  const order = useSelector(selectors.order) as number | null;
+  const order = useSelector(selectors.order);
 
   return (
     <div className={styles.orderDetails}>

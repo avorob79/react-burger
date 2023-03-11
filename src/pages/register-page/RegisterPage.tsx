@@ -1,17 +1,16 @@
 import React, { FC, FormEvent } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useForm, useDispatch, useSelector } from '../../hooks';
 import { register } from '../../services/actions/auth';
-import useForm from '../../hooks/useForm';
-import { IUser } from '../../utils/types';
+import { IUser } from '../../services/types';
 import { selectors } from '../../services';
 import styles from './RegisterPage.module.css';
 
 const RegisterPage: FC = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector(selectors.user) as IUser;
+  const user = useSelector(selectors.user);
 
   const { values, handleChange } = useForm<IUser & { password: string }>({
     name: "",
@@ -21,7 +20,7 @@ const RegisterPage: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(register(values.name, values.email, values.password) as any);
+    dispatch(register(values.name, values.email, values.password));
   };
 
   if (!!user) {

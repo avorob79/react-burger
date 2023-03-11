@@ -1,10 +1,9 @@
 import { FC, useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Loader } from '../';
+import { useDispatch, useSelector } from '../../hooks';
 import { getUser } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookie';
-import { IUser } from '../../utils/types';
 import { selectors } from '../../services';
 
 interface IProps {
@@ -17,11 +16,11 @@ const ProtectedRouteElement: FC<IProps> = ({ children }) => {
 
   const [isUserRequest, setUserRequest] = useState<boolean>(true);
 
-  const user = useSelector(selectors.user) as IUser;
+  const user = useSelector(selectors.user);
 
   useEffect(() => {
     if (!!getCookie("token")) {
-      dispatch(getUser() as any)
+      dispatch(getUser())
         .finally(() => setUserRequest(false));
     } else {
       setUserRequest(false);

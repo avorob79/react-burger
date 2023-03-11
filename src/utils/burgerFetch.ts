@@ -1,5 +1,5 @@
 import { setCookie } from './cookie';
-import { IUser } from './types';
+import { IUser } from '../services/types';
 
 interface ITokenResponse {
   success: boolean;

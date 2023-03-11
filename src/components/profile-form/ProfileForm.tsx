@@ -1,16 +1,17 @@
 import React, { FC, FormEvent, SyntheticEvent, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useForm, useDispatch, useSelector } from '../../hooks';
 import { updateUser } from '../../services/actions/auth';
-import useForm from '../../hooks/useForm';
-import { IUser } from '../../utils/types';
+import { IUser } from '../../services/types';
 import { selectors } from '../../services';
 import styles from './ProfileForm.module.css';
+
+const emptyUser = { email: "", name: "" };
 
 const ProfileForm: FC = () => {
   const dispatch = useDispatch();
 
-  const user = useSelector(selectors.user) as IUser;
+  const user: IUser = useSelector(selectors.user) || emptyUser;
 
   const { values, setValues, handleChange } = useForm<IUser & { password: string }>({
     ...user,
@@ -26,7 +27,7 @@ const ProfileForm: FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(updateUser(values.name, values.email, values.password) as any);
+    dispatch(updateUser(values.name, values.email, values.password));
   }
 
   const handleCancel = (e: SyntheticEvent) => {

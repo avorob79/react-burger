@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDrag } from 'react-dnd';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredient } from '../../utils/types';
+import { IIngredient } from '../../services/types';
 import styles from './BurgerIngredient.module.css';
 
 interface IProps {

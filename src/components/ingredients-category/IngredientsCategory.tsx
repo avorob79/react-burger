@@ -1,7 +1,7 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { BurgerIngredient } from '../';
-import { IIngredient } from '../../utils/types';
+import { useSelector } from '../../hooks';
+import { IIngredient } from '../../services/types';
 import { selectors } from '../../services';
 import styles from './IngredientsCategory.module.css';
 

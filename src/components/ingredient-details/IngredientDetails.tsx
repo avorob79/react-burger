@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { IIngredient } from '../../utils/types';
+import { useSelector } from '../../hooks';
 import { selectors } from '../../services';
 import styles from './IngredientDetails.module.css';
 
 const IngredientDetails: FC = () => {
   const { id } = useParams();
 
-  const ingredients = useSelector(selectors.ingredients) as Array<IIngredient>;
+  const ingredients = useSelector(selectors.ingredients);
 
   const details = ingredients.find(item => item._id === id);
 

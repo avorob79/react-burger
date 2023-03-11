@@ -1,41 +1,173 @@
+import {
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_ERROR,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_ERROR,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_ERROR,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_ERROR
+} from '../constants';
 import { setError } from './app';
 import { burgerFetch, fetchWithRefresh } from '../../utils/burgerFetch';
 import { setCookie, getCookie, deleteCookie } from '../../utils/cookie';
+import { IUser, TAppDispatch } from '../types';
 
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_ERROR = 'LOGIN_ERROR';
+export interface ILoginRequest {
+  readonly type: typeof LOGIN_REQUEST;
+}
 
-export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_ERROR = 'LOGOUT_ERROR';
+export interface ILoginSuccess {
+  readonly type: typeof LOGIN_SUCCESS;
+  readonly user: IUser;
+}
 
-export const REGISTER_REQUEST = 'REGISTER_REQUEST';
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_ERROR = 'REGISTER_ERROR';
+export interface ILoginError {
+  readonly type: typeof LOGIN_ERROR;
+  readonly error: string;
+}
 
-export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
-export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
-export const FORGOT_PASSWORD_ERROR = 'FORGOT_PASSWORD_ERROR';
+export interface ILogoutRequest {
+  readonly type: typeof LOGOUT_REQUEST;
+}
 
-export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
-export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
-export const RESET_PASSWORD_ERROR = 'RESET_PASSWORD_ERROR';
+export interface ILogoutSuccess {
+  readonly type: typeof LOGOUT_SUCCESS;
+}
 
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_ERROR = 'GET_USER_ERROR';
+export interface ILogoutError {
+  readonly type: typeof LOGOUT_ERROR;
+  readonly error: string;
+}
 
-export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
-export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
-export const UPDATE_USER_ERROR = 'UPDATE_USER_ERROR';
+export interface IRegisterRequest {
+  readonly type: typeof REGISTER_REQUEST;
+}
 
-export function login(email, password) {
-  return function (dispatch) {
+export interface IRegisterSuccess {
+  readonly type: typeof REGISTER_SUCCESS;
+  readonly user: IUser;
+}
+
+export interface IRegisterError {
+  readonly type: typeof REGISTER_ERROR;
+  readonly error: string;
+}
+
+export interface IForgotPasswordRequest {
+  readonly type: typeof FORGOT_PASSWORD_REQUEST;
+}
+
+export interface IForgotPasswordSuccess {
+  readonly type: typeof FORGOT_PASSWORD_SUCCESS;
+}
+
+export interface IForgotPasswordError {
+  readonly type: typeof FORGOT_PASSWORD_ERROR;
+  readonly error: string;
+}
+
+export interface IResetPasswordRequest {
+  readonly type: typeof RESET_PASSWORD_REQUEST;
+}
+
+export interface IResetPasswordSuccess {
+  readonly type: typeof RESET_PASSWORD_SUCCESS;
+}
+
+export interface IResetPasswordError {
+  readonly type: typeof RESET_PASSWORD_ERROR;
+  readonly error: string;
+}
+
+export interface IGetUserRequest {
+  readonly type: typeof GET_USER_REQUEST;
+}
+
+export interface IGetUserSuccess {
+  readonly type: typeof GET_USER_SUCCESS;
+  readonly user: IUser;
+}
+
+export interface IGetUserError {
+  readonly type: typeof GET_USER_ERROR;
+  readonly error: string;
+}
+
+export interface IUpdateUserRequest {
+  readonly type: typeof UPDATE_USER_REQUEST;
+}
+
+export interface IUpdateUserSuccess {
+  readonly type: typeof UPDATE_USER_SUCCESS;
+  readonly user: IUser;
+}
+
+export interface IUpdateUserError {
+  readonly type: typeof UPDATE_USER_ERROR;
+  readonly error: string;
+}
+
+export type TAuth =
+  | ILoginRequest
+  | ILoginSuccess
+  | ILoginError
+  | ILogoutRequest
+  | ILogoutSuccess
+  | ILogoutError
+  | IRegisterRequest
+  | IRegisterSuccess
+  | IRegisterError
+  | IForgotPasswordRequest
+  | IForgotPasswordSuccess
+  | IForgotPasswordError
+  | IResetPasswordRequest
+  | IResetPasswordSuccess
+  | IResetPasswordError
+  | IGetUserRequest
+  | IGetUserSuccess
+  | IGetUserError
+  | IUpdateUserRequest
+  | IUpdateUserSuccess
+  | IUpdateUserError;
+
+interface IResultResponse {
+  success: boolean;
+}
+
+interface IAuthResponse extends IResultResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: IUser;
+}
+
+interface IMessageResponse extends IResultResponse {
+  message: string;
+}
+
+interface IUserInfoResponse extends IResultResponse {
+  user: IUser;
+}
+
+export const login = (email: string, password: string) => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: LOGIN_REQUEST
     });
-    return burgerFetch("auth/login", {
+    return burgerFetch<IAuthResponse>("auth/login", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -64,14 +196,15 @@ export function login(email, password) {
       dispatch(setError(e.message));
     });
   };
-}
+};
 
-export function logout() {
-  return function (dispatch) {
+export const logout = () => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: LOGOUT_REQUEST
     });
-    return burgerFetch("auth/logout", {
+
+    return burgerFetch<IMessageResponse>("auth/logout", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -93,14 +226,14 @@ export function logout() {
       dispatch(setError(e.message));
     });
   };
-}
+};
 
-export function register(name, email, password) {
-  return function (dispatch) {
+export const register = (name: string, email: string, password: string) => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: REGISTER_REQUEST
     });
-    return burgerFetch("auth/register", {
+    return burgerFetch<IAuthResponse>("auth/register", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -130,14 +263,14 @@ export function register(name, email, password) {
       dispatch(setError(e.message));
     });
   };
-}
+};
 
-export function forgotPassword(email) {
-  return function (dispatch) {
+export const forgotPassword = (email: string) => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     });
-    return burgerFetch("password-reset", {
+    return burgerFetch<IMessageResponse>("password-reset", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -157,14 +290,14 @@ export function forgotPassword(email) {
       dispatch(setError(e.message));
     });
   };
-}
+};
 
-export function resetPassword(password, code) {
-  return function (dispatch) {
+export const resetPassword = (password: string, code: string) => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: RESET_PASSWORD_REQUEST
     });
-    return burgerFetch("password-reset/reset", {
+    return burgerFetch<IMessageResponse>("password-reset/reset", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -185,14 +318,14 @@ export function resetPassword(password, code) {
       dispatch(setError(e.message));
     });
   };
-}
+};
 
-export function getUser() {
-  return function (dispatch) {
+export const getUser = () => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: GET_USER_REQUEST
     });
-    return fetchWithRefresh("auth/user", ({
+    return fetchWithRefresh<IUserInfoResponse>("auth/user", ({
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -221,14 +354,14 @@ export function getUser() {
       dispatch(setError(e.message));
     });
   };
-}
+};
 
-export function updateUser(name, email, password) {
-  return function (dispatch) {
+export const updateUser = (name: string, email: string, password: string) => {
+  return function (dispatch: TAppDispatch) {
     dispatch({
       type: UPDATE_USER_REQUEST
     });
-    return fetchWithRefresh("auth/user", ({
+    return fetchWithRefresh<IUserInfoResponse>("auth/user", ({
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -262,4 +395,4 @@ export function updateUser(name, email, password) {
       dispatch(setError(e.message));
     });
   };
-}
+};

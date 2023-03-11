@@ -7,9 +7,21 @@ import {
   GET_ORDER_SUCCESS,
   GET_ORDER_ERROR,
   RESET_ORDER_DETAILS
-} from '../actions/burgerConstructor';
+} from '../constants';
+import { TBurgerConstructor } from '../actions/burgerConstructor';
+import { IIngredient, IIngredientExt } from '../types';
 
-const initialState = {
+export interface IBurgerConstructorState {
+  bun: IIngredient | null,
+  ingredients: ReadonlyArray<IIngredientExt>,
+
+  order: number | null,
+  orderRequest: boolean,
+  orderError: string | null,
+  orderDetails: boolean
+}
+
+const initialState: IBurgerConstructorState = {
   bun: null,
   ingredients: [],
 
@@ -19,7 +31,7 @@ const initialState = {
   orderDetails: false
 };
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (state = initialState, action: TBurgerConstructor): IBurgerConstructorState => {
   switch (action.type) {
     case SET_BUN: {
       return {

@@ -1,8 +1,7 @@
 import React, { FC, useState, useRef, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IngredientsCategory } from '../';
-import { IIngredient } from '../../utils/types';
+import { useSelector } from '../../hooks';
 import { selectors } from '../../services';
 import styles from './BurgerIngredients.module.css';
 
@@ -20,7 +19,7 @@ const BurgerIngredients: FC = () => {
   const sauceRef = useRef<HTMLHeadingElement>(null);
   const mainRef = useRef<HTMLHeadingElement>(null);
 
-  const ingredients = useSelector(selectors.ingredients) as Array<IIngredient>;
+  const ingredients = useSelector(selectors.ingredients);
 
   const onTabClick = (tab: string) => {
     setCurrentTab(tab);

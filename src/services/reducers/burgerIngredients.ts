@@ -6,9 +6,21 @@ import {
   RESET_BUN_COUNTER,
   INCREASE_INGREDIENT_COUNTER,
   DECREASE_INGREDIENT_COUNTER
-} from '../actions/burgerIngredients';
+} from '../constants';
+import { TBurgerIngredients } from '../actions/burgerIngredients';
+import { IIngredient } from '../types';
 
-const initialState = {
+export interface IBurgerIngredientsState {
+  ingredients: ReadonlyArray<IIngredient>;
+  ingredientsRequest: boolean;
+  ingredientsError: string | null;
+
+  counters: {
+    [name: string]: number
+  };
+}
+
+const initialState: IBurgerIngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsError: null,
@@ -16,7 +28,7 @@ const initialState = {
   counters: {}
 };
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: TBurgerIngredients): IBurgerIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
