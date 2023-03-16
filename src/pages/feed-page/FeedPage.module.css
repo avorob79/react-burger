@@ -1,0 +1,44 @@
+.page {
+  margin: 0 auto;
+  width: 1240px;
+  height: calc(100% - 128px);
+}
+
+.orders {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 600px;
+  height: calc(100% - 60px);
+  min-height: 626px;
+}
+
+.info {
+  float: right;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  width: 580px;
+}
+
+.numbers {
+  width: 272px;
+}
+
+.numbers div {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  height: 152px;
+}
+
+.doneColor {
+  color: var(--colors-interface-success);
+}
+
+.width100 {
+  width: 100%;
+}

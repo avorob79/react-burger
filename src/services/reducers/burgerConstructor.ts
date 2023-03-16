@@ -6,7 +6,7 @@ import {
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_ERROR,
-  RESET_ORDER_DETAILS
+  RESET_ORDER_INFO
 } from '../constants';
 import { TBurgerConstructor } from '../actions/burgerConstructor';
 import { IIngredient, IIngredientExt } from '../types';
@@ -18,7 +18,7 @@ export interface IBurgerConstructorState {
   order: number | null,
   orderRequest: boolean,
   orderError: string | null,
-  orderDetails: boolean
+  orderInfo: boolean
 }
 
 const initialState: IBurgerConstructorState = {
@@ -28,7 +28,7 @@ const initialState: IBurgerConstructorState = {
   order: null,
   orderRequest: false,
   orderError: null,
-  orderDetails: false
+  orderInfo: false
 };
 
 export const burgerConstructorReducer = (state = initialState, action: TBurgerConstructor): IBurgerConstructorState => {
@@ -71,7 +71,7 @@ export const burgerConstructorReducer = (state = initialState, action: TBurgerCo
         order: action.order,
         orderRequest: false,
         orderError: null,
-        orderDetails: true
+        orderInfo: true
       };
     }
     case GET_ORDER_ERROR: {
@@ -81,10 +81,10 @@ export const burgerConstructorReducer = (state = initialState, action: TBurgerCo
         orderError: action.error
       };
     }
-    case RESET_ORDER_DETAILS: {
+    case RESET_ORDER_INFO: {
       return {
         ...state,
-        orderDetails: false
+        orderInfo: false
       };
     }
     default: {

@@ -8,20 +8,20 @@ import {
   DECREASE_INGREDIENT_COUNTER
 } from '../constants';
 import { TBurgerIngredients } from '../actions/burgerIngredients';
-import { IIngredient } from '../types';
+import { IIngredient, IIngredientsDictionary } from '../types';
 
 export interface IBurgerIngredientsState {
   ingredients: ReadonlyArray<IIngredient>;
+  ingredientsDictionary: IIngredientsDictionary;
   ingredientsRequest: boolean;
   ingredientsError: string | null;
 
-  counters: {
-    [name: string]: number
-  };
+  counters: { [name: string]: number };
 }
 
 const initialState: IBurgerIngredientsState = {
   ingredients: [],
+  ingredientsDictionary: {},
   ingredientsRequest: false,
   ingredientsError: null,
 
@@ -37,9 +37,12 @@ export const burgerIngredientsReducer = (state = initialState, action: TBurgerIn
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
+      let dictionary: IIngredientsDictionary = {};
+      action.ingredients.forEach(item => dictionary[item._id] = item);
       return {
         ...state,
         ingredients: action.ingredients,
+        ingredientsDictionary: dictionary,
         ingredientsRequest: false,
         ingredientsError: null
       };

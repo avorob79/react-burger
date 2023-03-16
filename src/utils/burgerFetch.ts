@@ -1,4 +1,4 @@
-import { setCookie } from './cookie';
+import { setCookie, deleteCookie } from './cookie';
 import { IUser } from '../services/types';
 
 interface ITokenResponse {
@@ -29,6 +29,9 @@ export function fetchWithRefresh<T>(url: string, options: RequestInit, refreshUr
       if (error.cause.status === 403) {
         return burgerFetch<ITokenResponse>(refreshUrl, refreshOptions)
           .then((result: ITokenResponse) => {
+            deleteCookie("token");
+            deleteCookie("refreshToken");
+
             const accessToken = result.accessToken.split("Bearer ")[1];
             if (!!accessToken) {
               setCookie("token", accessToken);

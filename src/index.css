@@ -10,3 +10,8 @@ body {
 body, html, div#root {
   height: 100%;
 }
+
+div#react-modals {
+  position: relative;
+  z-index: 8;
+}

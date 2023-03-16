@@ -8,7 +8,7 @@ import {
   GET_ORDER_SUCCESS,
   GET_ORDER_ERROR,
 
-  RESET_ORDER_DETAILS
+  RESET_ORDER_INFO
 } from '../constants';
 import { v4 as uuidv4 } from 'uuid';
 import { setError } from './app';
@@ -52,8 +52,8 @@ export interface IGetOrderError {
   readonly error: string;
 }
 
-export interface IResetOrderDetails {
-  readonly type: typeof RESET_ORDER_DETAILS;
+export interface IResetOrderInfo {
+  readonly type: typeof RESET_ORDER_INFO;
 }
 
 export type TBurgerConstructor =
@@ -64,7 +64,7 @@ export type TBurgerConstructor =
   | IGetOrderRequest
   | IGetOrderSuccess
   | IGetOrderError
-  | IResetOrderDetails;
+  | IResetOrderInfo;
 
 export const setBun = (bun: IIngredient): ISetBun => ({
   type: SET_BUN,
@@ -88,8 +88,8 @@ export const replaceIngredient = (fromIndex: number, toIndex: number): IReplaceI
   toIndex: toIndex
 });
 
-export const resetOrderDetails = (): IResetOrderDetails => ({
-  type: RESET_ORDER_DETAILS
+export const resetOrderInfo = (): IResetOrderInfo => ({
+  type: RESET_ORDER_INFO
 });
 
 interface IOrderResponse {

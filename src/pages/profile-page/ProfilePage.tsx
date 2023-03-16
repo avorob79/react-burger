@@ -26,6 +26,9 @@ const ProfilePage: FC = () => {
         {pathname === "/profile" && (
           <p className="text text_type_main-default text_color_inactive mt-20">В этом разделе вы можете изменить свои персональные данные</p>
         )}
+        {pathname === "/profile/orders" && (
+          <p className="text text_type_main-default text_color_inactive mt-20">В этом разделе вы можете просмотреть свою историю заказов</p>
+        )}
       </div>
       <Outlet />
     </div>

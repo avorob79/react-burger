@@ -213,8 +213,6 @@ export const logout = () => {
         token: getCookie("refreshToken")
       })
     }).then(result => {
-      deleteCookie("token");
-      deleteCookie("refreshToken");
       dispatch({
         type: LOGOUT_SUCCESS
       });
@@ -224,6 +222,9 @@ export const logout = () => {
         error: e.message
       });
       dispatch(setError(e.message));
+    }).finally(() => {
+      deleteCookie("token");
+      deleteCookie("refreshToken");
     });
   };
 };
@@ -352,6 +353,8 @@ export const getUser = () => {
         error: e.message
       });
       dispatch(setError(e.message));
+      deleteCookie("token");
+      deleteCookie("refreshToken");
     });
   };
 };
@@ -393,6 +396,8 @@ export const updateUser = (name: string, email: string, password: string) => {
         error: e.message
       });
       dispatch(setError(e.message));
+      deleteCookie("token");
+      deleteCookie("refreshToken");
     });
   };
 };

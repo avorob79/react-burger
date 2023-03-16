@@ -2,10 +2,10 @@ import React, { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ConstructorIngredient, OrderDetails, Modal } from '../';
+import { ConstructorIngredient, OrderInfo, Modal } from '../';
 import { useDispatch, useSelector } from '../../hooks';
 import { setBunCounter, resetBunCounter, increaseIngredientCounter } from '../../services/actions/burgerIngredients';
-import { setBun, addIngredient, getOrder, resetOrderDetails } from '../../services/actions/burgerConstructor';
+import { setBun, addIngredient, getOrder, resetOrderInfo } from '../../services/actions/burgerConstructor';
 import { IIngredient } from '../../services/types';
 import { selectors } from '../../services';
 import styles from './BurgerConstructor.module.css';
@@ -17,7 +17,7 @@ const BurgerConstructor: FC = () => {
   const bun = useSelector(selectors.bun);
   const ingredients = useSelector(selectors.selectedIngredients);
   const orderRequest = useSelector(selectors.orderRequest);
-  const orderDetails = useSelector(selectors.orderDetails);
+  const orderInfo = useSelector(selectors.orderInfo);
 
   const user = useSelector(selectors.user);
 
@@ -56,7 +56,7 @@ const BurgerConstructor: FC = () => {
     }
   });
 
-  const showOrderDetails = () => {
+  const showOrderInfo = () => {
     if (!!user) {
       if (!!bun) {
         dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]));
@@ -66,8 +66,8 @@ const BurgerConstructor: FC = () => {
     }
   }
 
-  const hideOrderDetails = () => {
-    dispatch(resetOrderDetails());
+  const hideOrderInfo = () => {
+    dispatch(resetOrderInfo());
   };
 
   return (
@@ -100,11 +100,11 @@ const BurgerConstructor: FC = () => {
         <div className={styles.currency}>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" disabled={orderRequest || !bun} onClick={showOrderDetails} extraClass="ml-10 mr-4">Оформить заказ</Button>
+        <Button htmlType="button" type="primary" size="large" disabled={orderRequest || !bun} onClick={showOrderInfo} extraClass="ml-10 mr-4">Оформить заказ</Button>
       </div>
-      {!!orderDetails &&
-        <Modal title="" onClose={hideOrderDetails}>
-          <OrderDetails />
+      {!!orderInfo &&
+        <Modal title="" onClose={hideOrderInfo}>
+          <OrderInfo />
         </Modal>
       }
     </section>

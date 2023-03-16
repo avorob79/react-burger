@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { AppHeader, BurgerIngredients, BurgerConstructor, IngredientDetails, Loader, Modal, ProfileForm, ProtectedRouteElement } from '../';
-import { ForgotPasswordPage, IngredientDetailsPage, LoginPage, LogoutPage, NotFoundPage, ProfilePage, RegisterPage, ResetPasswordPage } from '../../pages';
+import { AppHeader, BurgerIngredients, BurgerConstructor, IngredientDetails, Loader, Modal, ModalOrderDetails, ProfileForm, ProfileOrders, ProtectedRouteElement } from '../';
+import { FeedPage, ForgotPasswordPage, IngredientDetailsPage, LoginPage, LogoutPage, NotFoundPage, OrderDetailsPage, ProfilePage, RegisterPage, ResetPasswordPage } from '../../pages';
 import { useDispatch, useSelector } from '../../hooks';
 import { getIngredients } from '../../services/actions/burgerIngredients';
 import { resetError } from '../../services/actions/app';
@@ -36,7 +36,7 @@ const App: FC = () => {
 
   const errors = useSelector(selectors.errors);
 
-  const hideIngredientDetails = () => navigate("/", { replace: true });
+  const hideModal = () => navigate(background, { replace: true });
 
   const hideError = () => dispatch(resetError());
 
@@ -58,22 +58,26 @@ const App: FC = () => {
       <AppHeader />
       <Routes location={background || location}>
         <Route path="/" element={main} />
-        <Route path="/orders" element={<div></div>} />
+        <Route path="/feed" element={<FeedPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="/profile" element={<ProtectedRouteElement><ProfilePage /></ProtectedRouteElement>}>
           <Route index element={<ProfileForm />} />
-          <Route path="orders" element={<div></div>} />
+          <Route path="orders" element={<ProfileOrders />} />
         </Route>
         <Route path="/logout" element={<LogoutPage />} />
         <Route path="/ingredients/:id" element={<IngredientDetailsPage />} />
+        <Route path="/feed/:id" element={<OrderDetailsPage />} />
+        <Route path="/profile/orders/:id" element={<ProtectedRouteElement><OrderDetailsPage /></ProtectedRouteElement>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       {!!background &&
         <Routes>
-          <Route path="/ingredients/:id" element={<Modal title="Детали ингредиента" onClose={hideIngredientDetails}><IngredientDetails /></Modal>} />
+          <Route path="/ingredients/:id" element={<Modal title="Детали ингредиента" onClose={hideModal}><IngredientDetails /></Modal>} />
+          <Route path="/feed/:id" element={<ModalOrderDetails onClose={hideModal} />} />
+          <Route path="/profile/orders/:id" element={<ModalOrderDetails onClose={hideModal} />} />
         </Routes>
       }
       {!!errors && errors.length > 0 &&
