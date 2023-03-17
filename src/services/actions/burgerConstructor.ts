@@ -3,6 +3,7 @@ import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   REPLACE_INGREDIENT,
+  RESET_INGREDIENTS,
 
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
@@ -38,6 +39,10 @@ export interface IReplaceIngredient {
   readonly toIndex: number;
 }
 
+export interface IResetIngredients {
+  readonly type: typeof RESET_INGREDIENTS;
+}
+
 export interface IGetOrderRequest {
   readonly type: typeof GET_ORDER_REQUEST;
 }
@@ -61,6 +66,7 @@ export type TBurgerConstructor =
   | IAddIngredient
   | IRemoveIngredient
   | IReplaceIngredient
+  | IResetIngredients
   | IGetOrderRequest
   | IGetOrderSuccess
   | IGetOrderError
@@ -86,6 +92,10 @@ export const replaceIngredient = (fromIndex: number, toIndex: number): IReplaceI
   type: REPLACE_INGREDIENT,
   fromIndex: fromIndex,
   toIndex: toIndex
+});
+
+export const resetIngredients = (): IResetIngredients => ({
+  type: RESET_INGREDIENTS
 });
 
 export const resetOrderInfo = (): IResetOrderInfo => ({

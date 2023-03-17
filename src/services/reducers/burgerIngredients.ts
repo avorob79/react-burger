@@ -5,7 +5,8 @@ import {
   SET_BUN_COUNTER,
   RESET_BUN_COUNTER,
   INCREASE_INGREDIENT_COUNTER,
-  DECREASE_INGREDIENT_COUNTER
+  DECREASE_INGREDIENT_COUNTER,
+  RESET_COUNTERS
 } from '../constants';
 import { TBurgerIngredients } from '../actions/burgerIngredients';
 import { IIngredient, IIngredientsDictionary } from '../types';
@@ -88,6 +89,12 @@ export const burgerIngredientsReducer = (state = initialState, action: TBurgerIn
           ...state.counters,
           [action.id]: state.counters[action.id] - 1
         }
+      };
+    }
+    case RESET_COUNTERS: {
+      return {
+        ...state,
+        counters: {}
       };
     }
     default: {

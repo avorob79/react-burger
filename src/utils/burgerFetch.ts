@@ -46,3 +46,21 @@ export function fetchWithRefresh<T>(url: string, options: RequestInit, refreshUr
       }
     });
 }
+
+export function refreshToken(url: string, options: RequestInit): Promise<string> | Promise<never> {
+  return burgerFetch<ITokenResponse>(url, options)
+    .then((result: ITokenResponse) => {
+      deleteCookie("token");
+      deleteCookie("refreshToken");
+
+      const accessToken = result.accessToken.split("Bearer ")[1];
+      if (!!accessToken) {
+        setCookie("token", accessToken);
+      }
+      if (!!result.refreshToken) {
+        setCookie("refreshToken", result.refreshToken);
+      }
+
+      return `?token=${accessToken}`;
+    });
+}

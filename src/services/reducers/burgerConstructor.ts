@@ -3,6 +3,7 @@ import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   REPLACE_INGREDIENT,
+  RESET_INGREDIENTS,
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_ERROR,
@@ -57,6 +58,13 @@ export const burgerConstructorReducer = (state = initialState, action: TBurgerCo
       return {
         ...state,
         ingredients: ingredients
+      };
+    }
+    case RESET_INGREDIENTS: {
+      return {
+        ...state,
+        bun: null,
+        ingredients: [],
       };
     }
     case GET_ORDER_REQUEST: {

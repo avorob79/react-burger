@@ -5,7 +5,8 @@ import {
   SET_BUN_COUNTER,
   RESET_BUN_COUNTER,
   INCREASE_INGREDIENT_COUNTER,
-  DECREASE_INGREDIENT_COUNTER
+  DECREASE_INGREDIENT_COUNTER,
+  RESET_COUNTERS
 } from '../constants';
 import { setError } from './app';
 import { burgerFetch } from '../../utils/burgerFetch';
@@ -45,6 +46,10 @@ export interface IDecreaseIngredientCounter {
   readonly id: string;
 }
 
+export interface IResetCounters {
+  readonly type: typeof RESET_COUNTERS;
+}
+
 export type TBurgerIngredients =
   | IGetIngredientsRequest
   | IGetIngredientsSuccess
@@ -52,7 +57,8 @@ export type TBurgerIngredients =
   | ISetBunCounter
   | IResetBunCounter
   | IIncreaseIngredientCounter
-  | IDecreaseIngredientCounter;
+  | IDecreaseIngredientCounter
+  | IResetCounters;
 
 export const setBunCounter = (id: string): ISetBunCounter => ({
   type: SET_BUN_COUNTER,
@@ -72,6 +78,10 @@ export const increaseIngredientCounter = (id: string): IIncreaseIngredientCounte
 export const decreaseIngredientCounter = (id: string): IDecreaseIngredientCounter => ({
   type: DECREASE_INGREDIENT_COUNTER,
   id: id
+});
+
+export const resetCounters = (): IResetCounters => ({
+  type: RESET_COUNTERS
 });
 
 interface IIngredientsResponse {

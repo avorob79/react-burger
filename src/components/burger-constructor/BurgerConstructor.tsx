@@ -2,10 +2,10 @@ import React, { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import { CurrencyIcon, ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ConstructorIngredient, OrderInfo, Modal } from '../';
+import { ConstructorIngredient, OrderInfo, Modal, Loader } from '../';
 import { useDispatch, useSelector } from '../../hooks';
-import { setBunCounter, resetBunCounter, increaseIngredientCounter } from '../../services/actions/burgerIngredients';
-import { setBun, addIngredient, getOrder, resetOrderInfo } from '../../services/actions/burgerConstructor';
+import { setBunCounter, resetBunCounter, increaseIngredientCounter, resetCounters } from '../../services/actions/burgerIngredients';
+import { setBun, addIngredient, resetIngredients, getOrder, resetOrderInfo } from '../../services/actions/burgerConstructor';
 import { IIngredient } from '../../services/types';
 import { selectors } from '../../services';
 import styles from './BurgerConstructor.module.css';
@@ -59,7 +59,11 @@ const BurgerConstructor: FC = () => {
   const showOrderInfo = () => {
     if (!!user) {
       if (!!bun) {
-        dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]));
+        dispatch(getOrder([bun._id, ...ingredients.map(item => item._id), bun._id]))
+          .then(() => {
+            dispatch(resetCounters());
+            dispatch(resetIngredients());
+          });
       }
     } else {
       navigate("/login");
@@ -102,9 +106,13 @@ const BurgerConstructor: FC = () => {
         </div>
         <Button htmlType="button" type="primary" size="large" disabled={orderRequest || !bun} onClick={showOrderInfo} extraClass="ml-10 mr-4">Оформить заказ</Button>
       </div>
-      {!!orderInfo &&
+      {(orderRequest || orderInfo) &&
         <Modal title="" onClose={hideOrderInfo}>
-          <OrderInfo />
+          {orderInfo ? (
+            <OrderInfo />
+          ) : (
+            <Loader extraClass={styles.loader} />
+          )}
         </Modal>
       }
     </section>
