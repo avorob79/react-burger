@@ -20,9 +20,39 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_ERROR
-} from '../actions/auth';
+} from '../constants';
+import { TAuth } from '../actions/auth';
+import { IUser } from '../types';
 
-const initialState = {
+export interface IAuthState {
+  user: IUser | null;
+
+  loginRequest: boolean;
+  loginError: string | null;
+
+  logoutRequest: boolean;
+  logoutError: string | null;
+
+  registerRequest: boolean;
+  registerError: string | null;
+
+  forgotPasswordRequest: boolean;
+  forgotPasswordError: string | null;
+
+  resetPasswordRequest: boolean;
+  resetPasswordError: string | null;
+
+  refreshTokenRequest: boolean;
+  refreshTokenError: string | null;
+
+  getUserRequest: boolean;
+  getUserError: string | null;
+
+  updateUserRequest: boolean;
+  updateUserError: string | null;
+}
+
+const initialState: IAuthState = {
   user: null,
 
   loginRequest: false,
@@ -50,7 +80,7 @@ const initialState = {
   updateUserError: null
 };
 
-export const authReducer = (state = initialState, action) => {
+export const authReducer = (state = initialState, action: TAuth): IAuthState => {
   switch (action.type) {
     case LOGIN_REQUEST: {
       return {

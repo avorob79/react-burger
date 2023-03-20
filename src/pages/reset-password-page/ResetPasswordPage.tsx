@@ -1,10 +1,8 @@
 import React, { FC, FormEvent } from 'react';
 import { Link, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useForm, useDispatch, useSelector } from '../../hooks';
 import { resetPassword } from '../../services/actions/auth';
-import useForm from '../../hooks/useForm';
-import { IUser } from '../../utils/types';
 import { selectors } from '../../services';
 import styles from './ResetPasswordPage.module.css';
 
@@ -13,7 +11,7 @@ const ResetPasswordPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useSelector(selectors.user) as IUser;
+  const user = useSelector(selectors.user);
 
   const { values, handleChange } = useForm<{ password: string; code: string }>({
     password: "",
@@ -22,7 +20,7 @@ const ResetPasswordPage: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(resetPassword(values.password, values.code) as any)
+    dispatch(resetPassword(values.password, values.code))
       .then(() => navigate("/login", { replace: true }));
   };
 

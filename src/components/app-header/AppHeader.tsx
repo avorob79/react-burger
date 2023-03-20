@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { BurgerIcon, ListIcon, ProfileIcon, Logo } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './AppHeader.module.css';
 
@@ -13,12 +13,14 @@ const AppHeader: FC = () => {
           <BurgerIcon type="primary" />
           <p className={`text text_type_main-default pl-2 ${styles.buttonText}`}>Конструктор</p>
         </NavLink>
-        <NavLink to="/orders" className={({ isActive }) => linkClass(isActive, styles.leftButton + " ml-2")}>
+        <NavLink to="/feed" className={({ isActive }) => linkClass(isActive, styles.leftButton + " ml-2")}>
           <ListIcon type="primary" />
           <p className={`text text_type_main-default pl-2 ${styles.buttonText}`}>Лента заказов</p>
         </NavLink>
         <div className={styles.logo}>
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
         </div>
         <NavLink to="/profile" className={({ isActive }) => linkClass(isActive, styles.rightButton)}>
           <ProfileIcon type="primary" />

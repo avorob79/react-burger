@@ -1,5 +1,5 @@
-import { setCookie } from './cookie';
-import { IUser } from './types';
+import { setCookie, deleteCookie } from './cookie';
+import { IUser } from '../services/types';
 
 interface ITokenResponse {
   success: boolean;
@@ -29,6 +29,9 @@ export function fetchWithRefresh<T>(url: string, options: RequestInit, refreshUr
       if (error.cause.status === 403) {
         return burgerFetch<ITokenResponse>(refreshUrl, refreshOptions)
           .then((result: ITokenResponse) => {
+            deleteCookie("token");
+            deleteCookie("refreshToken");
+
             const accessToken = result.accessToken.split("Bearer ")[1];
             if (!!accessToken) {
               setCookie("token", accessToken);
@@ -41,5 +44,23 @@ export function fetchWithRefresh<T>(url: string, options: RequestInit, refreshUr
       } else {
         return Promise.reject(error);
       }
+    });
+}
+
+export function refreshToken(url: string, options: RequestInit): Promise<string> | Promise<never> {
+  return burgerFetch<ITokenResponse>(url, options)
+    .then((result: ITokenResponse) => {
+      deleteCookie("token");
+      deleteCookie("refreshToken");
+
+      const accessToken = result.accessToken.split("Bearer ")[1];
+      if (!!accessToken) {
+        setCookie("token", accessToken);
+      }
+      if (!!result.refreshToken) {
+        setCookie("refreshToken", result.refreshToken);
+      }
+
+      return `?token=${accessToken}`;
     });
 }

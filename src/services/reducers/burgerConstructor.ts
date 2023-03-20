@@ -3,23 +3,36 @@ import {
   ADD_INGREDIENT,
   REMOVE_INGREDIENT,
   REPLACE_INGREDIENT,
+  RESET_INGREDIENTS,
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_ERROR,
-  RESET_ORDER_DETAILS
-} from '../actions/burgerConstructor';
+  RESET_ORDER_INFO
+} from '../constants';
+import { TBurgerConstructor } from '../actions/burgerConstructor';
+import { IIngredient, IIngredientExt } from '../types';
 
-const initialState = {
+export interface IBurgerConstructorState {
+  bun: IIngredient | null,
+  ingredients: ReadonlyArray<IIngredientExt>,
+
+  order: number | null,
+  orderRequest: boolean,
+  orderError: string | null,
+  orderInfo: boolean
+}
+
+const initialState: IBurgerConstructorState = {
   bun: null,
   ingredients: [],
 
   order: null,
   orderRequest: false,
   orderError: null,
-  orderDetails: false
+  orderInfo: false
 };
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (state = initialState, action: TBurgerConstructor): IBurgerConstructorState => {
   switch (action.type) {
     case SET_BUN: {
       return {
@@ -47,6 +60,13 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         ingredients: ingredients
       };
     }
+    case RESET_INGREDIENTS: {
+      return {
+        ...state,
+        bun: null,
+        ingredients: [],
+      };
+    }
     case GET_ORDER_REQUEST: {
       return {
         ...state,
@@ -59,7 +79,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         order: action.order,
         orderRequest: false,
         orderError: null,
-        orderDetails: true
+        orderInfo: true
       };
     }
     case GET_ORDER_ERROR: {
@@ -69,10 +89,10 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         orderError: action.error
       };
     }
-    case RESET_ORDER_DETAILS: {
+    case RESET_ORDER_INFO: {
       return {
         ...state,
-        orderDetails: false
+        orderInfo: false
       };
     }
     default: {

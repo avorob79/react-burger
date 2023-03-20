@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Loader } from '../../components/';
+import { useDispatch } from '../../hooks';
 import { logout } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookie';
 
@@ -12,7 +12,7 @@ const LogoutPage: FC = () => {
 
   useEffect(() => {
     if (!!getCookie("refreshToken")) {
-      dispatch(logout() as any)
+      dispatch(logout())
         .finally(() => setLogoutRequest(false));
     } else {
       setLogoutRequest(false);

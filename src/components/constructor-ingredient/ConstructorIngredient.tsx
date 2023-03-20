@@ -1,10 +1,10 @@
 import React, { FC, useCallback, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { DropTargetMonitor, XYCoord, useDrag, useDrop } from 'react-dnd';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { replaceIngredient, removeIngredient } from '../../services/actions/burgerConstructor';
+import { useDispatch } from '../../hooks';
 import { decreaseIngredientCounter } from '../../services/actions/burgerIngredients';
-import { IIngredientExt } from '../../utils/types';
+import { IIngredientExt } from '../../services/types';
 import styles from './ConstructorIngredient.module.css';
 
 interface IProps {

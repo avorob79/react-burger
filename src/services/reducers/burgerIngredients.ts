@@ -5,18 +5,31 @@ import {
   SET_BUN_COUNTER,
   RESET_BUN_COUNTER,
   INCREASE_INGREDIENT_COUNTER,
-  DECREASE_INGREDIENT_COUNTER
-} from '../actions/burgerIngredients';
+  DECREASE_INGREDIENT_COUNTER,
+  RESET_COUNTERS
+} from '../constants';
+import { TBurgerIngredients } from '../actions/burgerIngredients';
+import { IIngredient, IIngredientsDictionary } from '../types';
 
-const initialState = {
+export interface IBurgerIngredientsState {
+  ingredients: ReadonlyArray<IIngredient>;
+  ingredientsDictionary: IIngredientsDictionary;
+  ingredientsRequest: boolean;
+  ingredientsError: string | null;
+
+  counters: { [name: string]: number };
+}
+
+const initialState: IBurgerIngredientsState = {
   ingredients: [],
+  ingredientsDictionary: {},
   ingredientsRequest: false,
   ingredientsError: null,
 
   counters: {}
 };
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (state = initialState, action: TBurgerIngredients): IBurgerIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -25,9 +38,12 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
       };
     }
     case GET_INGREDIENTS_SUCCESS: {
+      let dictionary: IIngredientsDictionary = {};
+      action.ingredients.forEach(item => dictionary[item._id] = item);
       return {
         ...state,
         ingredients: action.ingredients,
+        ingredientsDictionary: dictionary,
         ingredientsRequest: false,
         ingredientsError: null
       };
@@ -73,6 +89,12 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
           ...state.counters,
           [action.id]: state.counters[action.id] - 1
         }
+      };
+    }
+    case RESET_COUNTERS: {
+      return {
+        ...state,
+        counters: {}
       };
     }
     default: {

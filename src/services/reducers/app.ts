@@ -1,10 +1,15 @@
-import { SET_ERROR, RESET_ERROR } from '../actions/app';
+import { SET_ERROR, RESET_ERROR } from '../constants';
+import { TApp } from '../actions/app';
 
-const initialState = {
+export interface IAppState {
+  errors: ReadonlyArray<string>;
+}
+
+const initialState: IAppState = {
   errors: []
 };
 
-export const appReducer = (state = initialState, action) => {
+export const appReducer = (state = initialState, action: TApp): IAppState => {
   switch (action.type) {
     case SET_ERROR: {
       return {

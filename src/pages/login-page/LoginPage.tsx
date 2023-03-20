@@ -1,10 +1,8 @@
 import React, { FC, FormEvent } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useForm, useDispatch, useSelector } from '../../hooks';
 import { login } from '../../services/actions/auth';
-import useForm from '../../hooks/useForm';
-import { IUser } from '../../utils/types';
 import { selectors } from '../../services';
 import styles from './LoginPage.module.css';
 
@@ -12,7 +10,7 @@ const LoginPage: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const user = useSelector(selectors.user) as IUser;
+  const user = useSelector(selectors.user);
 
   const { values, handleChange } = useForm<{ email: string; password: string }>({
     email: "",
@@ -21,7 +19,7 @@ const LoginPage: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch(login(values.email, values.password) as any);
+    dispatch(login(values.email, values.password));
   };
 
   if (!!user) {
