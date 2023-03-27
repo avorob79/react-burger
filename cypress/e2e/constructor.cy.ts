@@ -36,6 +36,31 @@ describe("Service is available", () => {
     cy.get("@ingredient3").children("p.text.text_type_main-default").then(target => {
       cy.get("@constructorIngredients").children().eq(2).contains(target.text());
     });
+
+    cy.get("@constructorIngredients").children().should('have.length', 3);
+
+    cy.get("@constructorIngredients").children().eq(2).trigger("dragstart", { dataTransfer });
+    cy.get("@constructorIngredients").children().eq(1).trigger("dragover", { dataTransfer }).trigger("drop", { dataTransfer });
+    cy.get("@constructorIngredients").children().eq(2).trigger("dragend", { dataTransfer });
+    cy.get("@constructorIngredients").children().should('have.length', 3);
+    cy.get("@ingredient1").children("p.text.text_type_main-default").then(target => {
+      cy.get("@constructorIngredients").children().eq(0).contains(target.text());
+    });
+    cy.get("@ingredient3").children("p.text.text_type_main-default").then(target => {
+      cy.get("@constructorIngredients").children().eq(1).contains(target.text());
+    });
+    cy.get("@ingredient2").children("p.text.text_type_main-default").then(target => {
+      cy.get("@constructorIngredients").children().eq(2).contains(target.text());
+    });
+
+    cy.get("@constructorIngredients").children().eq(1).find(".constructor-element__action > svg").click();
+    cy.get("@constructorIngredients").children().should('have.length', 2);
+    cy.get("@ingredient1").children("p.text.text_type_main-default").then(target => {
+      cy.get("@constructorIngredients").children().eq(0).contains(target.text());
+    });
+    cy.get("@ingredient2").children("p.text.text_type_main-default").then(target => {
+      cy.get("@constructorIngredients").children().eq(1).contains(target.text());
+    });
   });
 
   it("Should open and close ingredient modal", () => {
@@ -67,8 +92,8 @@ describe("Service is available", () => {
   it("Should send an order", () => {
     const dataTransfer = new DataTransfer();
 
-    cy.get("a[href*='/ingredients/60d3b41abdacab0026a733c6']").as("bun").trigger("dragstart", {      dataTransfer    });
-    cy.get("div[data-testid='bun1']").as("constructorBun1").trigger("drop", {      dataTransfer    });
+    cy.get("a[href*='/ingredients/60d3b41abdacab0026a733c6']").as("bun").trigger("dragstart", { dataTransfer });
+    cy.get("div[data-testid='bun1']").as("constructorBun1").trigger("drop", { dataTransfer });
     cy.get("@bun").children("p.text.text_type_main-default").then(target => {
       cy.get("@constructorBun1").contains(target.text());
       cy.get("div[data-testid='bun2']").contains(target.text());
