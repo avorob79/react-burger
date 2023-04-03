@@ -77,13 +77,13 @@ const BurgerConstructor: FC = () => {
   return (
     <section className={styles.burgerConstructor}>
       {!!bun ? (
-        <div ref={bunTarget1} className="mr-4 mt-25">
+        <div ref={bunTarget1} data-testid="bun1" className="mr-4 mt-25">
           <ConstructorElement type="top" isLocked={true} text={`${bun.name} (верх)`} price={bun.price} thumbnail={bun.image_mobile} />
         </div>
       ) : (
-        <div ref={bunTarget1} className={`constructor-element constructor-element_pos_top ${styles.emptyIngredient} mr-4 mt-25`}>Выберите булки</div>
+        <div ref={bunTarget1} data-testid="bun1" className={`constructor-element constructor-element_pos_top ${styles.emptyIngredient} mr-4 mt-25`}>Выберите булки</div>
       )}
-      <ul ref={ingredientsTarget} className={`${styles.ingredients} pl-4`}>
+      <ul ref={ingredientsTarget} data-testid="ingredients" className={`${styles.ingredients} pl-4`}>
         {(!!ingredients && ingredients.length > 0) ? ingredients.map((item, index) => (
           <ConstructorIngredient key={item.key} item={item} index={index} />
         )) : (
@@ -93,11 +93,11 @@ const BurgerConstructor: FC = () => {
         )}
       </ul>
       {!!bun ? (
-        <div ref={bunTarget2} className="mr-4">
+        <div ref={bunTarget2} data-testid="bun2" className="mr-4">
           <ConstructorElement type="bottom" isLocked={true} text={`${bun.name} (низ)`} price={bun.price} thumbnail={bun.image_mobile} />
         </div>
       ) : (
-        <div ref={bunTarget2} className={`constructor-element constructor-element_pos_bottom ${styles.emptyIngredient} mr-4`}>Выберите булки</div>
+        <div ref={bunTarget2} data-testid="bun2" className={`constructor-element constructor-element_pos_bottom ${styles.emptyIngredient} mr-4`}>Выберите булки</div>
       )}
       <div className={`${styles.order} pt-6 pb-10`}>
         <p className="text text_type_digits-medium">{totalPrice}</p>
