@@ -17,7 +17,7 @@ const Order: FC<IProps> = ({ data, url, expanded }) => {
   const location = useLocation();
   const ingredientsDictionary = useSelector(selectors.ingredientsDictionary);
   const price = useMemo(() =>
-    data.ingredients.reduce((price, item) => price + ingredientsDictionary[item].price, 0)
+    data.ingredients.filter((item) => !!item).reduce((price, item) => price + ingredientsDictionary[item].price, 0)
     , [data, ingredientsDictionary]);
   const orderDate = useMemo(() => dateToString(new Date(data.createdAt))
     , [data]);
@@ -36,7 +36,7 @@ const Order: FC<IProps> = ({ data, url, expanded }) => {
       }
       <div className={`${styles.ingredients} mt-6`}>
         <ul className={styles.images}>
-          {data.ingredients.filter((item, index, self) => self.indexOf(item) === index).slice(0, 6).map((item, index) => (
+          {data.ingredients.filter((item, index, self) => !!item && self.indexOf(item) === index).slice(0, 6).map((item, index) => (
             <li key={item} className={styles.image} style={{ zIndex: 7 - index, left: index * 48 }}>
               <img src={ingredientsDictionary[item].image_mobile} alt={ingredientsDictionary[item].name} />
               {index === 5 && data.ingredients.length > 6 && (
